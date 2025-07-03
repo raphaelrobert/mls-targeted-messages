@@ -8,8 +8,8 @@ number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
+area: "Security"
+workgroup: "Messaging Layer Security"
 keyword:
  - MLS
 venue:
@@ -17,7 +17,7 @@ venue:
   type: "Working Group"
   mail: "mls@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/mls/"
-  github: "https://github.com/raphaelrobert/mls-targeted-messages"
+  github: "raphaelrobert/mls-targeted-messages"
   latest: "https://raphaelrobert.github.io/mls-targeted-messages/draft-robert-mls-targeted-messages.html"
 
 author:
