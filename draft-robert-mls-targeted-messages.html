@@ -4,16 +4,15 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>TODO - Your title</title>
-<meta content="Your Name Here" name="author">
+<title>MLS Targeted Messages</title>
+<meta content="Raphael Robert" name="author">
 <meta content="
-       TODO Abstract 
+       MLS targeted messages allow sending encrypted messages to a specific member of
+an MLS group. 
     " name="description">
 <meta content="xml2rfc 3.29.0" name="generator">
-<meta content="next generation" name="keyword">
-<meta content="unicorn" name="keyword">
-<meta content="sparkling distributed ledger" name="keyword">
-<meta content="draft-todo-yourname-protocol-latest" name="ietf.draft">
+<meta content="MLS" name="keyword">
+<meta content="draft-robert-mls-targeted-messages-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.29.0
     Python 3.12.11
@@ -29,7 +28,7 @@
     setuptools 80.9.0
     wcwidth 0.2.13
 -->
-<link href="draft-todo-yourname-protocol.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-robert-mls-targeted-messages.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@font-face {
   font-family: 'Lora';
@@ -1045,12 +1044,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">TODO - Abbreviation</td>
+<td class="center">MLS Targeted Messages</td>
 <td class="right">July 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Here</td>
-<td class="center">Expires 3 January 2026</td>
+<td class="left">Robert</td>
+<td class="center">Expires 4 January 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1060,28 +1059,29 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">WG Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-todo-yourname-protocol-latest</dd>
+<dd class="internet-draft">draft-robert-mls-targeted-messages-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-07-02" class="published">2 July 2025</time>
+<time datetime="2025-07-03" class="published">3 July 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-01-03">3 January 2026</time></dd>
+<dd class="expires"><time datetime="2026-01-04">4 January 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
-      <div class="author-name">Y. N. Here</div>
-<div class="org">Your Organization Here</div>
+      <div class="author-name">R. Robert</div>
+<div class="org">Phoenix R&amp;D GmbH</div>
 </div>
 </dd>
 </dl>
 </div>
-<h1 id="title">TODO - Your title</h1>
+<h1 id="title">MLS Targeted Messages</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">TODO Abstract<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">MLS targeted messages allow sending encrypted messages to a specific member of
+an MLS group.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1089,14 +1089,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://example.com/LATEST">https://example.com/LATEST</a></span>.
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-todo-yourname-protocol/">https://datatracker.ietf.org/doc/draft-todo-yourname-protocol/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+        The latest revision of this draft can be found at <span><a href="https://raphaelrobert.github.io/mls-targeted-messages/draft-robert-mls-targeted-messages.html">https://raphaelrobert.github.io/mls-targeted-messages/draft-robert-mls-targeted-messages.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-robert-mls-targeted-messages/">https://datatracker.ietf.org/doc/draft-robert-mls-targeted-messages/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">
         Discussion of this document takes place on the
-        WG Working Group mailing list (<span><a href="mailto:WG@example.com">mailto:WG@example.com</a></span>),
-        which is archived at <span><a href="https://example.com/WG">https://example.com/WG</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+        Messaging Layer Security Working Group mailing list (<span><a href="mailto:mls@ietf.org">mailto:mls@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/mls/">https://mailarchive.ietf.org/arch/browse/mls/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/mls/">https://www.ietf.org/mailman/listinfo/mls/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
 <p id="section-note.1-4">Source for this draft and an issue tracker can be found at
-        <span><a href="https://github.com/USER/REPO">https://github.com/USER/REPO</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+        <span><a href="https://github.com/https://github.com/raphaelrobert/mls-targeted-messages">https://github.com/https://github.com/raphaelrobert/mls-targeted-messages</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1117,7 +1118,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1153,19 +1154,57 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-format" class="internal xref">Format</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-authentication" class="internal xref">Authentication</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-additional-authenticated-da" class="internal xref">Additional Authenticated Data (AAD)</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-encryption" class="internal xref">Encryption</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-padding" class="internal xref">Padding</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-sender-data-encryption" class="internal xref">Sender data encryption</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-application-data-encryption" class="internal xref">Application data encryption</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-mls-wire-formats" class="internal xref">MLS Wire Formats</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-mls-signature-labels" class="internal xref">MLS Signature Labels</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.1">
+                    <p id="section-toc.1-1.7.2.2.2.1.1"><a href="#section-7.2.1" class="auto internal xref">7.2.1</a>.  <a href="#name-targetedmessagetbs" class="internal xref">TargetedMessageTBS</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1176,7 +1215,19 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">TODO Introduction<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">MLS application messages make sending encrypted messages to all group members
+easy and efficient. Sometimes application protocols mandate that messages are
+only sent to specific group members, either for privacy or for efficiency
+reasons.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Targeted messages are a way to achieve this without having to create a new group
+with the sender and the specific recipients – which might not be possible or
+desired. Instead, targeted messages define the format and encryption of a
+message that is sent from a member of an existing group to another member of
+that group.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">The goal is to provide a one-shot messaging mechanism that provides
+confidentiality and authentication, reusing mechanisms from <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>, in
+particular <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>. Targeted messages can be used as a building block
+for more complex messaging protocols.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1190,26 +1241,318 @@ described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</s
 appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="security-considerations">
+<div id="format">
 <section id="section-3">
-      <h2 id="name-security-considerations">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      <h2 id="name-format">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-format" class="section-name selfRef">Format</a>
       </h2>
-<p id="section-3-1">TODO Security<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">This extension defines the <code>mls_targeted_message</code> WireFormat, where the content
+is a <code>TargetedMessage</code>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div class="lang-tls sourcecode" id="section-3-2">
+<pre>
+struct {
+  opaque group_id&lt;V&gt;;
+  uint64 epoch;
+  uint32 recipient_leaf_index;
+  opaque authenticated_data&lt;V&gt;;
+  opaque encrypted_sender_auth_data&lt;V&gt;;
+  opaque ciphertext&lt;V&gt;;
+} TargetedMessage;
+
+struct {
+  uint32 sender_leaf_index;
+  opaque signature&lt;V&gt;;
+  opaque kem_output&lt;V&gt;;
+} TargetedMessageSenderAuthData;
+
+struct {
+  opaque group_id&lt;V&gt;;
+  uint64 epoch;
+  uint32 recipient_leaf_index;
+  opaque authenticated_data&lt;V&gt;;
+  TargetedMessageSenderAuthData sender_auth_data;
+} TargetedMessageTBM;
+
+struct {
+  opaque group_id&lt;V&gt;;
+  uint64 epoch;
+  uint32 recipient_leaf_index;
+  opaque authenticated_data&lt;V&gt;;
+  uint32 sender_leaf_index;
+  opaque kem_output&lt;V&gt;;
+  opaque ciphertext&lt;V&gt;;
+} TargetedMessageTBS;
+
+struct {
+  opaque group_id&lt;V&gt;;
+  uint64 epoch;
+  opaque label&lt;V&gt; = "MLS 1.0 targeted message psk";
+} PSKId;
+
+struct {
+   opaque application_data&lt;V&gt;;
+   opaque padding[length_of_padding];
+} TargetedMessageContent;
+</pre><a href="#section-3-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="authentication">
+<section id="section-4">
+      <h2 id="name-authentication">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-authentication" class="section-name selfRef">Authentication</a>
+      </h2>
+<p id="section-4-1">A targeted message is authenticated by the sender's signature. The sender uses
+the signature key of the its <code>LeafNode</code>. The signature scheme used is the
+signature scheme specified in the cipher suite of the MLS group. The signature
+is computed over the serialized <code>TargetedMessageTBS</code> struct and is included in
+the <code>TargetedMessageSenderAuthData.signature</code> field:<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div class="lang-tls sourcecode" id="section-4-2">
+<pre>
+signature = SignWithLabel(sender_leaf_node_signature_private_key,
+              "TargetedMessageTBS", targeted_message_tbs)
+</pre><a href="#section-4-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4-3">The recipient <span class="bcp14">MUST</span> verify the signature:<a href="#section-4-3" class="pilcrow">¶</a></p>
+<div class="lang-tls sourcecode" id="section-4-4">
+<pre>
+VerifyWithLabel.verify(sender_leaf_node.signature_key,
+                       "TargetedMessageTBS",
+                       targeted_message_tbs,
+                       signature)
+</pre><a href="#section-4-4" class="pilcrow">¶</a>
+</div>
+<p id="section-4-5">In addition, targeted messages are authenticated using a pre-shared key (PSK),
+exported through the MLS exporter for the epoch specified in
+SenderAuthDataAAD.epoch:<a href="#section-4-5" class="pilcrow">¶</a></p>
+<div class="lang-tls sourcecode" id="section-4-6">
+<pre>
+targeted_message_psk =
+  MLS-Exporter("targeted message", "psk", KDF.Nh)
+</pre><a href="#section-4-6" class="pilcrow">¶</a>
+</div>
+<p id="section-4-7">The <code>targeted_message_psk</code> is used as the <code>psk</code> parameter to the HPKE encryption.
+The corresponding <code>psk_id</code> parameter is the serialized <code>PSKId</code> struct.<a href="#section-4-7" class="pilcrow">¶</a></p>
+<div id="additional-authenticated-data-aad">
+<section id="section-4.1">
+        <h3 id="name-additional-authenticated-da">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-additional-authenticated-da" class="section-name selfRef">Additional Authenticated Data (AAD)</a>
+        </h3>
+<p id="section-4.1-1">Targeted messages can include additional authenticated data (AAD) in the
+<code>TargetedMessage.authenticated_data</code> field. This field is used to carry
+application-specific data that is authenticated but not encrypted. The AAD is
+included in the <code>TargetedMessagesTBM</code> struct.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="encryption">
+<section id="section-5">
+      <h2 id="name-encryption">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-encryption" class="section-name selfRef">Encryption</a>
+      </h2>
+<p id="section-5-1">Targeted messages uses HPKE to encrypt the message content between two leaves.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<div id="padding">
+<section id="section-5.1">
+        <h3 id="name-padding">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-padding" class="section-name selfRef">Padding</a>
+        </h3>
+<p id="section-5.1-1">The TargetedMessageContent.padding field is set by the sender, by first encoding
+the application data and then appending the chosen number of zero bytes. A
+receiver identifies the padding field in a plaintext decoded from
+TargetedMessage.ciphertext by first decoding the application data; then the
+padding field comprises any remaining octets of plaintext. The padding field
+<span class="bcp14">MUST</span> be filled with all zero bytes. A receiver <span class="bcp14">MUST</span> verify that there are no
+non-zero bytes in the padding field, and if this check fails, the enclosing
+TargetedMessage <span class="bcp14">MUST</span> be rejected as malformed. This check ensures that the
+padding process is deterministic, so that, for example, padding cannot be used
+as a covert channel.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sender-data-encryption">
+<section id="section-5.2">
+        <h3 id="name-sender-data-encryption">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-sender-data-encryption" class="section-name selfRef">Sender data encryption</a>
+        </h3>
+<p id="section-5.2-1">In addition, <code>TargetedMessageSenderAuthData</code> is encrypted similarly to
+<code>MLSSenderData</code> as described in <span><a href="https://rfc-editor.org/rfc/rfc9420#section-6.3.2" class="relref">Section 6.3.2</a> of [<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>. The
+<code>TargetedMessageSenderAuthData.sender_leaf_index</code> field is the leaf index of the
+sender. The <code>TargetedMessageSenderAuthData.signature</code> field is the signature of
+the <code>TargetedMessageTBS</code> structure. The
+<code>TargetedMessageSenderAuthData.kem_output</code> field is the KEM output of the HPKE
+encryption.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">The key and nonce provided to the AEAD are computed as the KDF of the first
+KDF.Nh bytes of the <code>ciphertext</code> generated in the following section. If the
+length of the ciphertext is less than KDF.Nh, the whole ciphertext is
+used. In pseudocode, the key and nonce are derived as:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<div class="lang-tls sourcecode" id="section-5.2-3">
+<pre>
+sender_auth_data_secret =
+  MLS-Exporter("targeted message", "sender auth data secret", KDF.Nh)
+
+ciphertext_sample = ciphertext[0..KDF.Nh-1]
+
+sender_data_key = ExpandWithLabel(sender_auth_data_secret, "key",
+                      ciphertext_sample, AEAD.Nk)
+sender_data_nonce = ExpandWithLabel(sender_auth_data_secret, "nonce",
+                      ciphertext_sample, AEAD.Nn)
+</pre><a href="#section-5.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2-4">The Additional Authenticated Data (AAD) for the <code>SenderAuthData</code> ciphertext is
+the first three fields of <code>TargetedMessage</code>:<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+<div class="lang-tls sourcecode" id="section-5.2-5">
+<pre>
+struct {
+  opaque group_id&lt;V&gt;;
+  uint64 epoch;
+  uint32 recipient_leaf_index;
+} SenderAuthDataAAD;
+</pre><a href="#section-5.2-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="application-data-encryption">
+<section id="section-5.3">
+        <h3 id="name-application-data-encryption">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-application-data-encryption" class="section-name selfRef">Application data encryption</a>
+        </h3>
+<p id="section-5.3-1">The <code>TargetedMessageContent</code> struct contains the application data to be sent
+to the recipient. The <code>application_data</code> field contains the application data
+to be sent, and the <code>padding</code> field contains padding bytes to ensure that the
+ciphertext is of a length that is a multiple of the AEAD tag length.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">The <code>TargetedMessageContent</code> struct is serialized and then encrypted
+using HPKE.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-3">The HPKE context is a TargetedMessageContext struct with the
+following content, where <code>group_context</code> is the serialized context of the MLS
+group:<a href="#section-5.3-3" class="pilcrow">¶</a></p>
+<div class="lang-tls sourcecode" id="section-5.3-4">
+<pre>
+struct {
+  opaque label&lt;V&gt;;
+  opaque context&lt;V&gt;;
+} TargetedMessageContext;
+
+label = "MLS 1.0 TargetedMessageData"
+context = group_context
+</pre><a href="#section-5.3-4" class="pilcrow">¶</a>
+</div>
+<p id="section-5.3-5">The TargetedMessageContext struct is serialized as hpke_context and is used by
+both the sender and the recipient. The recipient's leaf node HPKE encryption key
+from the MLS group is used as the recipient's public key
+<code>recipient_node_public_key</code> for the HPKE encryption.<a href="#section-5.3-5" class="pilcrow">¶</a></p>
+<p id="section-5.3-6">The <code>TargetedMessageTBM</code> struct is serialized as <code>targeted_message_tbm</code>, an is
+used as the <code>aad</code> parameter for the HPKE encryption.<a href="#section-5.3-6" class="pilcrow">¶</a></p>
+<p id="section-5.3-7">The sender computes <code>TargetedMessageSenderAuthData.kem_output and
+</code>TargetedMessage.ciphertext`:<a href="#section-5.3-7" class="pilcrow">¶</a></p>
+<div class="lang-tls sourcecode" id="section-5.3-8">
+<pre>
+(kem_output, ciphertext) = SealPSK(
+                                        /* pkR */
+                                        recipient_node_public_key,
+                                        /* info */
+                                        hpke_context,
+                                        /* aad */
+                                        targeted_message_tbm,
+                                        /* pt */
+                                        targeted_message_content,
+                                        /* psk */
+                                        targeted_message_psk,
+                                        /* psk_id */
+                                        psk_id)
+</pre><a href="#section-5.3-8" class="pilcrow">¶</a>
+</div>
+<p id="section-5.3-9">The recipient decrypts the content as follows:<a href="#section-5.3-9" class="pilcrow">¶</a></p>
+<div class="lang-tls sourcecode" id="section-5.3-10">
+<pre>
+targeted_message_content = OpenPSK(kem_output,
+                  receiver_node_private_key,
+                  hpke_context,
+                  targeted_message_tbm,
+                  ciphertext,
+                  targeted_message_psk,
+                  psk_id)
+</pre><a href="#section-5.3-10" class="pilcrow">¶</a>
+</div>
+<p id="section-5.3-11">The functions <code>SealPSK</code> and <code>OpenPSK</code> are defined in <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-5.3-11" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-6">
+      <h2 id="name-security-considerations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-6-1">In addition to the sender authentication, Targeted Messages are authenticated by
+using a pre-shared key (PSK) between the sender and the recipient. The PSK is
+exported from the group key schedule using the label "targeted message psk".
+This ensures that the PSK is only valid for a specific group and epoch, and the
+Forward Secrecy and Post-Compromise Security guarantees of the group key
+schedule apply to the targeted messages as well. The PSK also ensures that an
+attacker needs access to the private group state in addition to the
+HPKE/signature's private keys. This improves confidentiality guarantees against
+passive attackers and authentication guarantees against active attackers.`<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-4">
+<section id="section-7">
       <h2 id="name-iana-considerations">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-4-1">This document has no IANA actions.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="mls-wire-formats">
+<section id="section-7.1">
+        <h3 id="name-mls-wire-formats">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-mls-wire-formats" class="section-name selfRef">MLS Wire Formats</a>
+        </h3>
+<p id="section-7.1-1">The <code>mls_targeted_message</code> MLS Wire Format is used to send a message to a subset
+of members of an MLS group.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.1-2.1">
+            <p id="section-7.1-2.1.1">Value: 0x0006 (suggested)<a href="#section-7.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.1-2.2">
+            <p id="section-7.1-2.2.1">Name: mls_targeted_message<a href="#section-7.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.1-2.3">
+            <p id="section-7.1-2.3.1">Recommended: Y<a href="#section-7.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.1-2.4">
+            <p id="section-7.1-2.4.1">Reference: RFC XXXX<a href="#section-7.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="mls-signature-labels">
+<section id="section-7.2">
+        <h3 id="name-mls-signature-labels">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-mls-signature-labels" class="section-name selfRef">MLS Signature Labels</a>
+        </h3>
+<div id="targetedmessagetbs">
+<section id="section-7.2.1">
+          <h4 id="name-targetedmessagetbs">
+<a href="#section-7.2.1" class="section-number selfRef">7.2.1. </a><a href="#name-targetedmessagetbs" class="section-name selfRef">TargetedMessageTBS</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.2.1-1.1">
+              <p id="section-7.2.1-1.1.1">Label: "TargetedMessageTBS"<a href="#section-7.2.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.1-1.2">
+              <p id="section-7.2.1-1.2.1">Recommended: Y<a href="#section-7.2.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.1-1.3">
+              <p id="section-7.2.1-1.3.1">Reference: RFC XXXX<a href="#section-7.2.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="sec-normative-references">
-<section id="section-5">
+<section id="section-8">
       <h2 id="name-normative-references">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
@@ -1217,8 +1560,16 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9180">[RFC9180]</dt>
+      <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="seriesInfo">RFC 9180</span>, <span class="seriesInfo">DOI 10.17487/RFC9180</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9180">https://www.rfc-editor.org/rfc/rfc9180</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9420">[RFC9420]</dt>
+    <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Beurdouche, B.</span>, <span class="refAuthor">Robert, R.</span>, <span class="refAuthor">Millican, J.</span>, <span class="refAuthor">Omara, E.</span>, and <span class="refAuthor">K. Cohn-Gordon</span>, <span class="refTitle">"The Messaging Layer Security (MLS) Protocol"</span>, <span class="seriesInfo">RFC 9420</span>, <span class="seriesInfo">DOI 10.17487/RFC9420</span>, <time datetime="2023-07" class="refDate">July 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9420">https://www.rfc-editor.org/rfc/rfc9420</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1237,11 +1588,11 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
       </h2>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Your Name Here</span></div>
-<div dir="auto" class="left"><span class="org">Your Organization Here</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Raphael Robert</span></div>
+<div dir="auto" class="left"><span class="org">Phoenix R&amp;D GmbH</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:your.email@example.com" class="email">your.email@example.com</a>
+<a href="mailto:ietf@raphaelrobert.com" class="email">ietf@raphaelrobert.com</a>
 </div>
 </address>
 </section>
