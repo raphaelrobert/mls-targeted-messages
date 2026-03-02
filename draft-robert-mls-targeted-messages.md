@@ -68,6 +68,14 @@ protocols.
 This document defines the `mls_targeted_message` WireFormat, where the content
 is a `TargetedMessage`.
 
+A `TargetedMessage` is carried in the `MLSMessage` envelope defined in
+{{Section 6 of !RFC9420}}:
+
+~~~ tls
+case mls_targeted_message:
+    TargetedMessage targeted_message;
+~~~
+
 ~~~ tls
 struct {
   opaque group_id<V>;
@@ -93,13 +101,14 @@ struct {
 } TargetedMessageTBM;
 
 struct {
+  ProtocolVersion version = mls10;
+  WireFormat wire_format = mls_targeted_message;
   opaque group_id<V>;
   uint64 epoch;
   uint32 recipient_leaf_index;
   opaque authenticated_data<V>;
   uint32 sender_leaf_index;
   opaque kem_output<V>;
-  opaque ciphertext<V>;
 } TargetedMessageTBS;
 
 struct {
@@ -130,10 +139,10 @@ signature = SignWithLabel(sender_leaf_node_signature_private_key,
 The recipient MUST verify the signature:
 
 ~~~ tls
-VerifyWithLabel.verify(sender_leaf_node.signature_key,
-                       "TargetedMessageTBS",
-                       targeted_message_tbs,
-                       signature)
+VerifyWithLabel(sender_leaf_node.signature_key,
+                "TargetedMessageTBS",
+                targeted_message_tbs,
+                signature)
 ~~~
 
 In addition, targeted messages are authenticated using a pre-shared key (PSK),
@@ -160,6 +169,11 @@ included in the `TargetedMessageTBM` struct.
 
 Targeted messages use HPKE to encrypt the message content to a specific group
 member.
+
+Unlike the HPKE Base mode used in {{!RFC9420}}, targeted messages use HPKE PSK
+mode ({{Section 5.1.3 of !RFC9180}}). The PSK is derived from the MLS group key
+schedule, binding the encryption to the group state and providing authentication
+that the sender holds the group's PSK.
 
 ## Padding
 
@@ -191,6 +205,9 @@ struct {
 label = "MLS 1.0 TargetedMessageData"
 context = group_context
 ~~~
+
+The `TargetedMessageContext` struct follows the same structure as `EncryptContext`
+in {{Section 5.1.3 of !RFC9420}}, but uses PSK mode rather than Base mode.
 
 The `TargetedMessageContext` struct is serialized as `hpke_context` and is used
 by both the sender and the recipient. The recipient's leaf node HPKE encryption
@@ -269,17 +286,98 @@ struct {
 } SenderAuthDataAAD;
 ~~~
 
+# Recipient Validation
+
+Upon receiving a `TargetedMessage`, the recipient MUST perform the following
+validation steps:
+
+- Verify that `group_id` matches a group the recipient is a member of.
+- Verify that `epoch` corresponds to the current epoch or a past epoch for which
+  the recipient still has the necessary key material.
+- Verify that `recipient_leaf_index` matches the recipient's own leaf index in
+  the specified epoch.
+- After decrypting `TargetedMessageSenderAuthData`, verify that
+  `sender_leaf_index` refers to a non-blank leaf in the ratchet tree of the
+  specified epoch.
+- Verify the signature as described in {{authentication}}.
+
+The recipient MUST NOT process or act on the decrypted
+`TargetedMessageContent` until all of the above validation steps have
+completed successfully. In particular, the content MUST NOT be passed to
+the application before the sender's signature has been verified.
+
+If any of these checks fail, the `TargetedMessage` MUST be rejected.
+
 # Security Considerations
 
-In addition to the sender authentication, Targeted Messages are authenticated by
-using a pre-shared key (PSK) between the sender and the recipient. The PSK is
-exported from the group key schedule using the label "targeted message" and
-context "psk". This ensures that the PSK is only valid for a specific group and
-epoch, and the Forward Secrecy and Post-Compromise Security guarantees of the
-group key schedule apply to the targeted messages as well. The PSK also ensures
-that an attacker needs access to the private group state in addition to the
-HPKE/signature's private keys. This improves confidentiality guarantees against
-passive attackers and authentication guarantees against active attackers.
+This section describes the security properties of targeted messages and their
+limitations relative to MLS application messages {{!RFC9420}}.
+
+## Authentication
+
+Targeted messages use two complementary authentication mechanisms. The sender's
+signature ({{authentication}}) binds the message to the sender's identity:
+the recipient verifies the signature against the sender's `LeafNode` signature
+key, confirming that the holder of that key produced the message. The PSK
+exported from the group key schedule provides a second layer that proves group
+membership. Per {{Section 9.1 of !RFC9180}}, HPKE PSK mode provides outsider
+authentication, ensuring that an entity that does not know the PSK cannot forge
+a valid ciphertext. It does not, however, authenticate which PSK holder
+produced the message. Sender identity relies entirely on the signature.
+
+Because the PSK is derived from the MLS key schedule, it is only valid for a
+specific group and epoch. The Forward Secrecy and Post-Compromise Security
+guarantees of the group key schedule therefore extend to targeted messages. The
+PSK also ensures that an attacker needs access to the private group state in
+addition to the HPKE and signature private keys, improving confidentiality
+guarantees against passive attackers and authentication guarantees against active
+attackers.
+
+## Signature Verification Before Processing
+
+The decryption flow necessarily produces plaintext before the signature can be
+verified: the recipient first decrypts the sender authentication data
+({{sender-data-encryption}}) to obtain the sender's leaf index, KEM output,
+and signature, then decrypts the HPKE ciphertext to obtain the
+`TargetedMessageContent`, and finally verifies the signature over the
+`TargetedMessageTBS` structure.
+
+Because the PSK is shared among all group members and each member's HPKE
+public key is available in the ratchet tree, any group member can construct
+HPKE ciphertext that decrypts successfully while claiming a different sender
+identity. The signature is the sole mechanism that binds the message to the
+claimed sender. {{recipient-validation}} requires that the recipient not act on
+the decrypted content until signature verification has succeeded.
+
+## Forward Secrecy
+
+Targeted messages encrypt directly to the recipient's leaf node HPKE encryption
+key. Unlike application messages in {{!RFC9420}}, which derive per-message keys
+from a secret tree, targeted messages have no per-message key derivation.
+Compromising the recipient's leaf private key therefore exposes all targeted
+messages encrypted to that key within the epoch. Forward secrecy is at epoch
+granularity only: it depends on the key schedule advancing to a new epoch and on
+the recipient deleting the previous epoch's leaf private key. Applications that
+require stronger forward secrecy guarantees SHOULD advance the epoch frequently.
+
+## Sender Identity Confidentiality
+
+The `sender_auth_data_secret` used to encrypt the
+`TargetedMessageSenderAuthData` is derived from the MLS exporter
+({{sender-data-encryption}}) and is available to all group members. Sender
+identity is therefore protected from the Delivery Service and from entities
+outside the group, but not from other group members who obtain the encrypted
+message.
+
+## Replay Protection
+
+Targeted messages do not include a generation counter or nonce at the protocol
+level. A captured targeted message can therefore be replayed within the same
+epoch and will pass all validation checks. However, targeted messages are a
+stateless one-shot mechanism: replaying a message causes the recipient to see
+duplicate content but does not change any group state. Applications that require
+replay detection SHOULD include a unique nonce in the `authenticated_data`
+field and track previously seen values.
 
 # IANA Considerations
 
@@ -298,6 +396,14 @@ of members of an MLS group.
 ### TargetedMessageTBS
 
 * Label: "TargetedMessageTBS"
+* Recommended: Y
+* Reference: RFC XXXX
+
+## MLS Exporter Labels
+
+### targeted message
+
+* Label: "targeted message"
 * Recommended: Y
 * Reference: RFC XXXX
 
