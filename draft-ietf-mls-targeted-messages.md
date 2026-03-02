@@ -2,7 +2,7 @@
 title: "Messaging Layer Security (MLS) Targeted Messages"
 category: info
 
-docname: draft-robert-mls-targeted-messages-latest
+docname: draft-ietf-mls-targeted-messages-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
