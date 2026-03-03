@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-01T02:33:17.098566+00:00",
+  "timestamp": "2026-03-03T02:25:55.789310+00:00",
   "repo": "mlswg/mls-targeted-messages",
   "labels": [
     {
@@ -56,24 +56,26 @@
       "id": "PR_kwDOPFs6J87Gc7M2",
       "title": "editorial improvements and RFC style guide compliance",
       "url": "https://github.com/mlswg/mls-targeted-messages/pull/1",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "raphaelrobert",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "Editorial changes throughoiut the draft. The Sender Data Encryption section is moved further down, but is unchanged.",
       "createdAt": "2026-02-26T07:28:33Z",
-      "updatedAt": "2026-02-26T07:48:59Z",
+      "updatedAt": "2026-03-02T14:57:03Z",
       "baseRepository": "mlswg/mls-targeted-messages",
       "baseRefName": "main",
       "baseRefOid": "27bebe7bd34c87c6a9bff6bdee711f8b569e630d",
       "headRepository": "mlswg/mls-targeted-messages",
       "headRefName": "editorial-improvements",
       "headRefOid": "8d4d6e98f35a8067df1d1494ecda9e5f366228ad",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-03-02T14:57:03Z",
+      "mergedAt": "2026-03-02T14:57:03Z",
+      "mergedBy": "raphaelrobert",
+      "mergeCommit": {
+        "oid": "59a8000907152999c6e65fbeab08db495fee555f"
+      },
       "comments": [],
       "reviews": [
         {
@@ -96,24 +98,26 @@
       "id": "PR_kwDOPFs6J87GdAze",
       "title": "add protocol changes, recipient validation, security analysis",
       "url": "https://github.com/mlswg/mls-targeted-messages/pull/2",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "raphaelrobert",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "This PR makes the following changes:\r\n\r\n- Changes to `TargetedMessageTBS`\r\n  1. Add protocol version & wire format fields: This is just defence in depth to avoid confusion between messages.\r\n  2. Remove ciphertext field: This was not necessary and created a circular reference.\r\n- Recipient validation rules\r\n- Expand security considerations\r\n- Add missing MLS Exporter Label in IANA Considerations section\r\n- Add minor clarifications in various sections",
       "createdAt": "2026-02-26T07:35:35Z",
-      "updatedAt": "2026-02-26T16:42:44Z",
+      "updatedAt": "2026-03-02T15:04:02Z",
       "baseRepository": "mlswg/mls-targeted-messages",
       "baseRefName": "main",
-      "baseRefOid": "27bebe7bd34c87c6a9bff6bdee711f8b569e630d",
+      "baseRefOid": "59a8000907152999c6e65fbeab08db495fee555f",
       "headRepository": "mlswg/mls-targeted-messages",
       "headRefName": "functional-changes",
-      "headRefOid": "905d357431cf5a5add61a2434188e17e19636bb8",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "7c0ec594ba4cc02c0da520adaf426a775dba8d7f",
+      "closedAt": "2026-03-02T15:04:01Z",
+      "mergedAt": "2026-03-02T15:04:01Z",
+      "mergedBy": "raphaelrobert",
+      "mergeCommit": {
+        "oid": "1d5385215c6b898e308df58938153146c83ed656"
+      },
       "comments": [],
       "reviews": [
         {
@@ -130,6 +134,34 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOPFs6J87HW-kL",
+      "title": "rename draft",
+      "url": "https://github.com/mlswg/mls-targeted-messages/pull/3",
+      "state": "MERGED",
+      "author": "raphaelrobert",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-03-02T15:15:30Z",
+      "updatedAt": "2026-03-02T15:23:57Z",
+      "baseRepository": "mlswg/mls-targeted-messages",
+      "baseRefName": "main",
+      "baseRefOid": "1d5385215c6b898e308df58938153146c83ed656",
+      "headRepository": "mlswg/mls-targeted-messages",
+      "headRefName": "adopted-draft",
+      "headRefOid": "bd66ee08489f0d1dcf8f8855efbffe911ac0feb9",
+      "closedAt": "2026-03-02T15:23:57Z",
+      "mergedAt": "2026-03-02T15:23:57Z",
+      "mergedBy": "raphaelrobert",
+      "mergeCommit": {
+        "oid": "1eec114ab96f0093184b0c90e1cc1e6337f9f896"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
