@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-04-19T02:53:15.705658+00:00",
+  "timestamp": "2026-04-21T02:47:33.886839+00:00",
   "repo": "mlswg/mls-targeted-messages",
   "labels": [
     {
@@ -49,7 +49,40 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 4,
+      "id": "I_kwDOPFs6J87_uTG2",
+      "title": "Support a single message encrypted for multiple members",
+      "url": "https://github.com/mlswg/mls-targeted-messages/issues/4",
+      "state": "OPEN",
+      "author": "rohanmahy",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "As discussed at IETF 125, having a single TargetedMessage encrypted for multiple members at once, insures that if a single message is decrypted by multiple members, it had the same plaintext. This is a very desirable property. A client that does not want this property could sstill send distinct TargetedMessages with different plaintext to different members.\n",
+      "createdAt": "2026-04-19T08:23:53Z",
+      "updatedAt": "2026-04-19T08:23:53Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 5,
+      "id": "I_kwDOPFs6J87_uUiO",
+      "title": "Consider including ContentType",
+      "url": "https://github.com/mlswg/mls-targeted-messages/issues/5",
+      "state": "OPEN",
+      "author": "rohanmahy",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "\nhttps://datatracker.ietf.org/doc/draft-mahy-mls-new-content-types/ defines new `status` and `ephemeral` content types. It would be useful to be able to send such content types inside a TargetedMesage.",
+      "createdAt": "2026-04-19T08:27:20Z",
+      "updatedAt": "2026-04-19T08:27:20Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": [
     {
       "number": 1,
