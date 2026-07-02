@@ -1,6 +1,6 @@
 ---
 title: "Messaging Layer Security (MLS) Targeted Messages"
-category: info
+category: std
 
 docname: draft-ietf-mls-targeted-messages-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
@@ -97,7 +97,8 @@ struct {
   uint64 epoch;
   uint32 recipient_leaf_index;
   opaque authenticated_data<V>;
-  TargetedMessageSenderAuthData sender_auth_data;
+  uint32 sender_leaf_index;
+  opaque kem_output<V>;
 } TargetedMessageTBM;
 
 struct {
@@ -109,6 +110,7 @@ struct {
   opaque authenticated_data<V>;
   uint32 sender_leaf_index;
   opaque kem_output<V>;
+  opaque ciphertext_hash<V>;
 } TargetedMessageTBS;
 
 struct {
@@ -123,6 +125,24 @@ struct {
 } TargetedMessageContent;
 ~~~
 
+# Cryptographic Algorithms
+
+All cryptographic operations on a targeted message use the cipher suite of
+the MLS group in which the message is sent ({{Section 5.1 of !RFC9420}}). In
+particular, the group's cipher suite determines:
+
+- the KEM, KDF, and AEAD used for the HPKE encryption of the message content
+  ({{application-data-encryption}}),
+- the KDF underlying the `MLS-Exporter` and `ExpandWithLabel` derivations
+  ({{authentication}} and {{sender-data-encryption}}), including the value
+  `KDF.Nh`,
+- the AEAD used to encrypt the sender authentication data
+  ({{sender-data-encryption}}), including the values `AEAD.Nk` and `AEAD.Nn`,
+- the hash function used to compute `ciphertext_hash`
+  ({{authentication}}), and
+- the signature algorithm used to sign and verify the `TargetedMessageTBS`
+  struct ({{authentication}}).
+
 # Authentication
 
 A targeted message is authenticated by the sender's signature. The sender uses
@@ -135,6 +155,17 @@ the `TargetedMessageSenderAuthData.signature` field:
 signature = SignWithLabel(sender_leaf_node_signature_private_key,
               "TargetedMessageTBS", targeted_message_tbs)
 ~~~
+
+The `ciphertext_hash` field of `TargetedMessageTBS` is computed over the
+`TargetedMessage.ciphertext` field with the hash function of the group's
+cipher suite:
+
+~~~ tls
+ciphertext_hash = Hash(ciphertext)
+~~~
+
+Covering the ciphertext hash binds the signature to the encrypted message
+content.
 
 The recipient MUST verify the signature:
 
@@ -171,30 +202,29 @@ Targeted messages use HPKE to encrypt the message content to a specific group
 member.
 
 Unlike the HPKE Base mode used in {{!RFC9420}}, targeted messages use HPKE PSK
-mode ({{Section 5.1.3 of !RFC9180}}). The PSK is derived from the MLS group key
+mode ({{Section 5.1.2 of !RFC9180}}). The PSK is derived from the MLS group key
 schedule, binding the encryption to the group state and providing authentication
 that the sender holds the group's PSK.
 
 ## Padding
 
-The TargetedMessageContent.padding field is set by the sender, by first encoding
-the application data and then appending the chosen number of zero bytes. A
-receiver identifies the padding field in a plaintext decoded from
-TargetedMessage.ciphertext by first decoding the application data; then the
-padding field comprises any remaining octets of plaintext. The padding field
-MUST be filled with all zero bytes. A receiver MUST verify that there are no
-non-zero bytes in the padding field, and if this check fails, the enclosing
-TargetedMessage MUST be rejected as malformed. This check ensures that the
-padding process is deterministic, so that, for example, padding cannot be used
-as a covert channel.
+The `TargetedMessageContent.padding` field is set by the sender, by first
+encoding the application data and then appending the chosen number of zero
+bytes. A receiver identifies the `padding` field in a plaintext decoded from
+`TargetedMessage.ciphertext` by first decoding the application data; then the
+`padding` field comprises any remaining octets of plaintext. The `padding`
+field MUST be filled with all zero bytes. A receiver MUST verify that there
+are no non-zero bytes in the `padding` field, and if this check fails, the
+enclosing `TargetedMessage` MUST be rejected as malformed. This check ensures
+that the padding process is deterministic, so that, for example, padding
+cannot be used as a covert channel.
 
 ## Application Data Encryption
 
 The `TargetedMessageContent` struct is serialized and encrypted using HPKE.
 
 The HPKE context is a `TargetedMessageContext` struct with the
-following content, where `group_context` is the serialized context of the MLS
-group:
+following content:
 
 ~~~ tls
 struct {
@@ -203,40 +233,63 @@ struct {
 } TargetedMessageContext;
 
 label = "MLS 1.0 TargetedMessageData"
-context = group_context
+context = ""
 ~~~
 
 The `TargetedMessageContext` struct follows the same structure as `EncryptContext`
-in {{Section 5.1.3 of !RFC9420}}, but uses PSK mode rather than Base mode.
+in {{Section 5.1.3 of !RFC9420}}, but uses PSK mode rather than Base mode. The
+`context` field is empty; the message is bound to the group state through the
+`targeted_message_psk`, as described in {{group-state-binding}}.
 
 The `TargetedMessageContext` struct is serialized as `hpke_context` and is used
 by both the sender and the recipient. The recipient's leaf node HPKE encryption
-key from the MLS group is used as the recipient's public key
-`recipient_node_public_key` for the HPKE encryption.
+key from the ratchet tree of the epoch specified in the `TargetedMessage` is
+used as the recipient's public key `recipient_node_public_key` for the HPKE
+encryption.
 
 The `TargetedMessageTBM` struct is serialized as `targeted_message_tbm`, and is
-used as the `aad` parameter for the HPKE encryption.
-
-The sender computes `TargetedMessageSenderAuthData.kem_output` and
-`TargetedMessage.ciphertext`:
+used as the `aad` parameter for the HPKE encryption. Note that
+`targeted_message_tbm` contains the `kem_output` of the HPKE encapsulation.
+The sender therefore cannot use the single-shot `SealPSK` API defined in
+{{Section 6.1 of !RFC9180}}, because the `aad` parameter depends on the
+`kem_output` that `SealPSK` would produce. Instead, the sender encapsulates
+first, constructs the AAD, and then seals:
 
 ~~~ tls
-(kem_output, ciphertext) = SealPSK(
-                                        /* pkR */
-                                        recipient_node_public_key,
-                                        /* info */
-                                        hpke_context,
-                                        /* aad */
-                                        targeted_message_tbm,
-                                        /* pt */
-                                        targeted_message_content,
-                                        /* psk */
-                                        targeted_message_psk,
-                                        /* psk_id */
-                                        psk_id)
+(kem_output, context) = SetupPSKS(recipient_node_public_key,
+                                  hpke_context,
+                                  targeted_message_psk,
+                                  psk_id)
+
+ciphertext = context.Seal(targeted_message_tbm,
+                          targeted_message_content)
 ~~~
 
-The recipient decrypts the content as follows:
+In full, the sender performs the following steps in order:
+
+ - Derive the `targeted_message_psk` ({{authentication}}) and the
+   `sender_auth_data_secret` ({{sender-data-encryption}}).
+ - Encapsulate to `recipient_node_public_key` using `SetupPSKS` to obtain
+   `kem_output` and the HPKE sender context.
+ - Serialize the `TargetedMessageTBM` struct, which includes `kem_output`, as
+   `targeted_message_tbm`.
+ - Compute `ciphertext` by calling `Seal` on the HPKE sender context with
+   `targeted_message_tbm` as `aad` and the serialized `TargetedMessageContent`
+   as plaintext.
+ - Compute `ciphertext_hash` from `ciphertext`, construct the
+   `TargetedMessageTBS` struct, and compute the `signature` as described in
+   {{authentication}}.
+ - Assemble the `TargetedMessageSenderAuthData` struct from
+   `sender_leaf_index`, `signature`, and `kem_output`, and encrypt it as
+   described in {{sender-data-encryption}}, using a sample of the `ciphertext`
+   computed above.
+
+The `TargetedMessageSenderAuthData.kem_output` field is set to `kem_output`,
+and the `TargetedMessage.ciphertext` field is set to `ciphertext`.
+
+The recipient learns the `kem_output` by decrypting
+`encrypted_sender_auth_data` before decrypting the content, and can therefore
+use the single-shot API to decrypt the content:
 
 ~~~ tls
 targeted_message_content = OpenPSK(kem_output,
@@ -248,7 +301,11 @@ targeted_message_content = OpenPSK(kem_output,
                   psk_id)
 ~~~
 
-The functions `SealPSK` and `OpenPSK` are defined in {{!RFC9180}}.
+The functions `SetupPSKS`, `Context.Seal`, and `OpenPSK` are defined in
+{{!RFC9180}}. The two-step flow on the sender side produces the same
+`(kem_output, ciphertext)` as `SealPSK` would with the same inputs; the
+single-shot API merely cannot express an `aad` that depends on its own
+`kem_output`.
 
 ## Sender Data Encryption
 
@@ -261,7 +318,9 @@ The key and nonce provided to the Authenticated Encryption with Associated
 Data (AEAD) are computed as the Key Derivation Function (KDF) of the first
 KDF.Nh bytes of the `ciphertext` generated in {{application-data-encryption}}.
 If the length of the ciphertext is less than KDF.Nh, the whole ciphertext is
-used. In pseudocode, the key and nonce are derived as:
+used. As with the `targeted_message_psk`, the `sender_auth_data_secret` is
+exported from the key schedule of the epoch specified in the
+`TargetedMessage`. In pseudocode, the key and nonce are derived as:
 
 ~~~ tls
 sender_auth_data_secret =
@@ -289,24 +348,52 @@ struct {
 # Recipient Validation
 
 Upon receiving a `TargetedMessage`, the recipient MUST perform the following
-validation steps:
+steps in order:
 
-- Verify that `group_id` matches a group the recipient is a member of.
-- Verify that `epoch` corresponds to the current epoch or a past epoch for which
-  the recipient still has the necessary key material.
-- Verify that `recipient_leaf_index` matches the recipient's own leaf index in
-  the specified epoch.
-- After decrypting `TargetedMessageSenderAuthData`, verify that
-  `sender_leaf_index` refers to a non-blank leaf in the ratchet tree of the
-  specified epoch.
-- Verify the signature as described in {{authentication}}.
+ - Verify that `group_id` matches a group the recipient is a member of.
+ - Verify that `epoch` corresponds to the current epoch of that group, or to a
+   past epoch for which the recipient still has the necessary key material
+   ({{messages-from-past-epochs}}).
+ - Verify that `recipient_leaf_index` matches the recipient's own leaf index
+   in the specified epoch.
+ - Decrypt `encrypted_sender_auth_data` as described in
+   {{sender-data-encryption}} and verify that `sender_leaf_index` refers to a
+   non-blank leaf in the ratchet tree of the specified epoch.
+ - Compute `ciphertext_hash` from `TargetedMessage.ciphertext` and verify the
+   signature as described in {{authentication}}.
+ - Decrypt `ciphertext` as described in {{application-data-encryption}}.
+ - Verify that the `padding` field of the decrypted `TargetedMessageContent`
+   contains only zero bytes, as described in {{padding}}.
 
-The recipient MUST NOT process or act on the decrypted
-`TargetedMessageContent` until all of the above validation steps have
-completed successfully. In particular, the content MUST NOT be passed to
-the application before the sender's signature has been verified.
+The signature MUST be verified before `ciphertext` is decrypted. The
+`TargetedMessageTBS` struct covers the `ciphertext` only through its hash,
+which the recipient computes from the wire-format `ciphertext` field, so
+signature verification does not depend on the decrypted content. Verifying
+first ensures that no plaintext is produced from a message whose claimed
+sender has not been authenticated. The decrypted `TargetedMessageContent`
+MUST NOT be passed to the application before all of the above steps have
+completed successfully.
 
-If any of these checks fail, the `TargetedMessage` MUST be rejected.
+If any of these steps fails, the `TargetedMessage` MUST be rejected.
+
+## Messages from Past Epochs
+
+Processing a `TargetedMessage` for a past epoch requires the recipient to
+retain the following key material and state for that epoch:
+
+- the exporter secret, or the `targeted_message_psk` and
+  `sender_auth_data_secret` derived from it,
+- the recipient's leaf node HPKE private key, and
+- the leaf nodes of the ratchet tree, in order to look up the sender's leaf
+  node.
+
+Support for past epochs is OPTIONAL, accepting only the current epoch is the
+most conservative behavior. Retaining key material from past epochs weakens
+the Forward Secrecy properties described in {{forward-secrecy}}: targeted
+messages for an epoch remain decryptable for as long as that epoch's key
+material exists. Applications that accept messages from past epochs SHOULD
+bound the number of retained epochs and SHOULD delete the corresponding key
+material as soon as it is no longer needed.
 
 # Security Considerations
 
@@ -333,21 +420,30 @@ addition to the HPKE and signature private keys, improving confidentiality
 guarantees against passive attackers and authentication guarantees against active
 attackers.
 
-## Signature Verification Before Processing
+## Group State Binding
 
-The decryption flow necessarily produces plaintext before the signature can be
-verified: the recipient first decrypts the sender authentication data
-({{sender-data-encryption}}) to obtain the sender's leaf index, KEM output,
-and signature, then decrypts the HPKE ciphertext to obtain the
-`TargetedMessageContent`, and finally verifies the signature over the
-`TargetedMessageTBS` structure.
+Targeted messages are bound to the group state through the
+`targeted_message_psk`. The key schedule of {{!RFC9420}} injects the
+serialized `GroupContext` into the derivation of each epoch's secrets, so the
+exporter-derived PSK commits to the full group state of the specified epoch,
+including the tree hash and the confirmed transcript hash.
+
+## Signature Verification Before Processing
 
 Because the PSK is shared among all group members and each member's HPKE
 public key is available in the ratchet tree, any group member can construct
 HPKE ciphertext that decrypts successfully while claiming a different sender
 identity. The signature is the sole mechanism that binds the message to the
-claimed sender. {{recipient-validation}} requires that the recipient not act on
-the decrypted content until signature verification has succeeded.
+claimed sender.
+
+The `TargetedMessageTBS` structure covers the `kem_output` and a hash of the
+`ciphertext`, both of which are available before content decryption: the
+former from the decrypted sender authentication data
+({{sender-data-encryption}}), the latter from the wire format itself.
+{{recipient-validation}} therefore requires the recipient to verify the
+signature before decrypting the HPKE ciphertext, ensuring that plaintext is
+never produced from a message whose claimed sender has not been
+authenticated.
 
 ## Forward Secrecy
 
@@ -359,6 +455,9 @@ messages encrypted to that key within the epoch. Forward secrecy is at epoch
 granularity only: it depends on the key schedule advancing to a new epoch and on
 the recipient deleting the previous epoch's leaf private key. Applications that
 require stronger forward secrecy guarantees SHOULD advance the epoch frequently.
+Accepting targeted messages from past epochs requires retaining old key
+material and further weakens forward secrecy, as described in
+{{messages-from-past-epochs}}.
 
 ## Sender Identity Confidentiality
 
@@ -368,6 +467,14 @@ The `sender_auth_data_secret` used to encrypt the
 identity is therefore protected from the Delivery Service and from entities
 outside the group, but not from other group members who obtain the encrypted
 message.
+
+The encryption mechanism is the same as the one used for `MLSSenderData` in
+{{Section 6.3.2 of !RFC9420}}, and the analysis of {{Section 16.3 of
+!RFC9420}} applies equally to targeted messages. In particular, using the
+same `sender_auth_data_secret` with the same ciphertext sample more than once
+would reuse an AEAD key and nonce pair; with the AEAD algorithms of the
+cipher suites defined in {{!RFC9420}}, the probability of two ciphertext
+samples colliding is no more than 2^-128.
 
 ## Replay Protection
 
@@ -383,8 +490,8 @@ field and track previously seen values.
 
 ## MLS Wire Formats
 
-The `mls_targeted_message` MLS Wire Format is used to send a message to a subset
-of members of an MLS group.
+The `mls_targeted_message` MLS Wire Format is used to send a message to a
+single member of an MLS group.
 
  * Value: 0x0006 (suggested)
  * Name: mls_targeted_message
@@ -399,6 +506,18 @@ of members of an MLS group.
 * Recommended: Y
 * Reference: RFC XXXX
 
+## MLS Public Key Encryption Labels
+
+Although targeted messages use the HPKE PSK mode directly rather than
+`EncryptWithLabel`, the label follows the same convention and is registered
+to prevent collisions with other uses of the same HPKE keys.
+
+### TargetedMessageData
+
+* Label: "TargetedMessageData"
+* Recommended: Y
+* Reference: RFC XXXX
+
 ## MLS Exporter Labels
 
 ### targeted message
@@ -408,6 +527,174 @@ of members of an MLS group.
 * Reference: RFC XXXX
 
 --- back
+
+# Test Vectors
+
+The following test vectors exercise the receiver-side processing described in
+{{recipient-validation}}. Because the HPKE encapsulation is randomized, the
+sender-side operations are not reproducible from the inputs alone; sender
+implementations can be tested by round-tripping against a receiver
+implementation.
+
+All vectors use the MTI MLS cipher suite
+MLS_128_DHKEMX25519_AES128GCM_SHA256_Ed25519. All values except `cipher_suite`,
+`epoch`, the leaf indices, and `padding_length` (all decimal) are hex-encoded.
+
+Each vector provides the group state held by the recipient:
+
+- `group_id` and `epoch`: the group and epoch the message belongs to.
+- `exporter_secret`: the exporter secret of that epoch, from which the
+  `targeted_message_psk` and the `sender_auth_data_secret` are derived
+  ({{authentication}} and {{sender-data-encryption}}).
+- `sender_leaf_index` and `sender_leaf_node`: the sender's leaf index and
+  serialized `LeafNode`, which provides the signature public key.
+- `recipient_leaf_index` and `recipient_encryption_priv`: the recipient's
+  leaf index and leaf node HPKE private key.
+
+as well as the message and its expected plaintext:
+
+- `targeted_message`: a serialized `MLSMessage` with the
+  `mls_targeted_message` WireFormat, containing the `TargetedMessage`.
+- `authenticated_data`: the expected content of the
+  `TargetedMessage.authenticated_data` field.
+- `application_data`: the expected application data after decryption.
+- `padding_length`: the expected length of the zero-filled `padding` field of
+  the decrypted `TargetedMessageContent`.
+
+A verifier performs the steps of {{recipient-validation}} on
+`targeted_message` and checks that all validation steps succeed, that the
+decrypted application data matches `application_data`, and that the padding
+has length `padding_length`.
+
+## Vector 1
+
+~~~
+cipher_suite: 1
+epoch: 1
+sender_leaf_index: 0
+recipient_leaf_index: 1
+padding_length: 0
+group_id: cc545d00feed847c9fcba01ca8b4987a
+exporter_secret:
+  05971f5e2b9993bcafa0a3d56807244c66a3c93b4e439c7bd5cdd169be0f4381
+sender_leaf_node:
+  20261fe9ecdc72ea51d0b6fca9ca9ac9f60cce427ffefefe5b69f9b1c6ddfe03
+  7920086ea8e6a03548f2c0c01822d17a7b740246fade24764cea0bfb15dab691
+  7acd00010673656e64657202000106000100020003000002000101000000006a
+  467e24000000006ab54a34004040864a206fc50f108bdfa0444aefb4e128a66b
+  9eb41b9c6cbf966cfd4ed512a7ba487fcb4b0e18999f67ee08a301538c3f7d92
+  b28ac24103c61b92192df4d52905
+recipient_encryption_priv:
+  26bd8122d929b7eb26efb4669803d5faffe166027c33a4b6965379b452978d7f
+authenticated_data:
+application_data:
+  4b41542074657374207061796c6f616420666f72207461726765746564206d65
+  737361676573
+targeted_message:
+  0001000610cc545d00feed847c9fcba01ca8b4987a0000000000000001000000
+  010040775fce6b31a536d82b8622160021b9f8d334a0f90215041a63f9bbbab9
+  904f01d4d0639f70cb46058325779b5183a341ad21d83bb541930994320ab0eb
+  aeade031efc60de304661bdac6bde5746c152f39dd083664cddd07d93ddc7361
+  fc49f928044a6971c270dfec5d2d0ac6b63053f0c56308332b3eb137baeda80e
+  696a69ce98d42e38d68823767268900a4af6ea2b0973a099c82a51268a318c6c
+  699e774895879be7c35c1e7f557fcc1733bd93
+~~~
+
+## Vector 2
+
+~~~
+cipher_suite: 1
+epoch: 5
+sender_leaf_index: 0
+recipient_leaf_index: 2
+padding_length: 64
+group_id: 819eec2f706ac61ee9bafd7b9fd31cf7
+exporter_secret:
+  249a5afd41a1f2fea3b3f3acf23a2e8be12067ef1e9922663287204be7571f00
+sender_leaf_node:
+  2060a9e120484d9c6506aeff9749bbca4ee725c40b6575ecaf080d392323584b
+  2520f3791381dd844d3c5d9b900ed98e69dd424a5509b69789629ae0ede99689
+  cbf100010673656e64657202000106000100020003000002000101000000006a
+  467e24000000006ab54a34004040eef8e9ba566bfe53d663cdbd1285c5d10998
+  e95b9fca89452629757f454b11f639df15b4200a1c32691015ca881ac9cdf550
+  831c6d89fdaed85b5efb21461d0d
+recipient_encryption_priv:
+  fbe8a1258df29b81fe1e0fa7cf3b1048f4be9309a5590ab1e922eb7ba4bfa49f
+authenticated_data: 726571756573742d69643d3432
+application_data: 7365636f6e64207461726765746564207061796c6f6164
+targeted_message:
+  0001000610819eec2f706ac61ee9bafd7b9fd31cf70000000000000005000000
+  020d726571756573742d69643d343240773a219020641baacc55e5b762759721
+  0fc36b1e65be4c362f575a3b7d69eceae55eb6419c1d69a891f78ea9986f819d
+  03c48986009182483818722da3df2f8e875a8a9226511adbba26532d223c7229
+  4679b9ff52460d68df08ac61e76c906f43e0711e02f49f2cc23327a475fcb348
+  b1ca7ef919feaaf44068c83943bc53e8055ce739cb31a6bcc9264b11130f1844
+  575caf153b0d46ed98c51f53581cda073a7936bf9acf620738fa001c3fc049ed
+  94a17455cabd088bfb00efc2bed7a8ae49dc7a8672a88d0936bc157f1f8487b8
+  719d2049c07eddf0762c2802bdb73c26274f
+~~~
+
+## Vector 3
+
+~~~
+cipher_suite: 1
+epoch: 42
+sender_leaf_index: 3
+recipient_leaf_index: 7
+padding_length: 128
+group_id: 70a9204973aff6642734f9ba6b5792c6
+exporter_secret:
+  2a1691e01a751a5e22a3906633f78435b14f1b313124338d9896e8b49cb59fef
+sender_leaf_node:
+  206e9de742e7abd12d797ffb94e124000dbeaf94dcccc6a70b55fca99a321980
+  1d206f84c7f10dc4ecfe93952108ffb0904825a199b1f37aeac4aedb848a166e
+  1d8300010673656e64657202000106000100020003000002000101000000006a
+  467e24000000006ab54a3400404075ec3f38b4d0d35a7b5a42f85416c26e3e56
+  e30d03827adeaa2319b187fac34bf1f108dca9d17274416d8dbf7ec03ad02a56
+  d80c9e0c755286d0b447fc40e802
+recipient_encryption_priv:
+  89a94b207c3bf5b9ba9a704b689ec56437952f1ada84883e3b2225618c61b75d
+authenticated_data:
+application_data:
+targeted_message:
+  000100061070a9204973aff6642734f9ba6b5792c6000000000000002a000000
+  07004077cd789de01be4a55d679fc7551e3ca215de779efb874b905911ec7a74
+  0ce2c7fb4c71356aae83dcd8a0ba96d64cf3e5a4413af85eabd4fef58d100396
+  581a69a20516c1cef76bc76b5caedcf17ce1b3d89118e3b1c0ac974a6f78fbd4
+  3b9cb97098d2697f97f0edeb3a403d4f3683d22fabbb6da67c16154091ce8156
+  d3d5057e803f17af6f88d59f4fe70e254a82dbc5037f86f81a8c8ac0eee77396
+  fcb0f97f5ad7a3100ac20b621563f6bb3acd5bc5a8cac3479a041e93e737c8fc
+  255b0c4fd93c601e648658c76a7b7e1db60610111b04f1539c6ea5d76d66a3cc
+  16cd8ca078ef72f460dfd7adc6be27f11b435aed87f46a6cb9a1b8d3667d084e
+  0144e65839be751022d26f2e65e5
+~~~
+
+# Change Log
+{:removeInRFC="true"}
+
+Changes since draft-ietf-mls-targeted-messages-00:
+
+- Changed the intended status from Informational to Standards Track.
+- Added a `ciphertext_hash` field to `TargetedMessageTBS` so that the
+  signature covers the message content; `TargetedMessageTBM` now carries
+  `sender_leaf_index` and `kem_output` directly.
+- Replaced the single-shot `SealPSK` call with `SetupPSKS` followed by
+  `Context.Seal`, and specified the full sender-side order of operations.
+- Specified the recipient-side processing steps, including signature
+  verification before content decryption.
+- Emptied the `context` field of `TargetedMessageContext`; the group state
+  binding is provided by the PSK, as described in the new Group State
+  Binding security consideration.
+- Added a Cryptographic Algorithms section binding all operations to the
+  group's cipher suite.
+- Bound the recipient's public key and the exported secrets to the epoch
+  specified in the message, and added a Messages from Past Epochs section.
+- Referenced the analysis of sender data encryption from RFC 9420 in the
+  security considerations.
+- Registered the "TargetedMessageData" MLS Public Key Encryption Label.
+- Added a Test Vectors appendix.
+- Editorial fixes: corrected the RFC 9180 section reference for PSK mode and
+  aligned the IANA wire format description with the single-recipient design.
 
 # Acknowledgments
 {:numbered="false"}
