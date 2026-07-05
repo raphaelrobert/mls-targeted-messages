@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-05-17T03:38:59.345631+00:00",
+  "timestamp": "2026-07-05T03:36:23.765179+00:00",
   "repo": "mlswg/mls-targeted-messages",
   "labels": [
     {
@@ -62,9 +62,17 @@
       "labels": [],
       "body": "As discussed at IETF 125, having a single TargetedMessage encrypted for multiple members at once, insures that if a single message is decrypted by multiple members, it had the same plaintext. This is a very desirable property. A client that does not want this property could sstill send distinct TargetedMessages with different plaintext to different members.\n",
       "createdAt": "2026-04-19T08:23:53Z",
-      "updatedAt": "2026-04-19T08:23:53Z",
+      "updatedAt": "2026-07-02T16:28:55Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "raphaelrobert",
+          "authorAssociation": "MEMBER",
+          "body": "Targeted Messages are meant as a building block to build exactly this kind of extended functionality. An application can just create on common ciphertext and use TMs to encrypt the corresponding key to several recipients.\nAdding this functionality to the base construction would not make it more efficient due to how HPKE works.\nIn other words, I don't think we should include this because applications can already trivially do this.",
+          "createdAt": "2026-07-02T16:28:55Z",
+          "updatedAt": "2026-07-02T16:28:55Z"
+        }
+      ]
     },
     {
       "number": 5,
@@ -78,9 +86,17 @@
       "labels": [],
       "body": "\nhttps://datatracker.ietf.org/doc/draft-mahy-mls-new-content-types/ defines new `status` and `ephemeral` content types. It would be useful to be able to send such content types inside a TargetedMesage.",
       "createdAt": "2026-04-19T08:27:20Z",
-      "updatedAt": "2026-04-19T08:27:20Z",
+      "updatedAt": "2026-07-02T16:35:01Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "raphaelrobert",
+          "authorAssociation": "MEMBER",
+          "body": "The content of TMs is not structured on purpose so that it aligns with application messages and I think we should keep it that way.\n\nI also think that TMs would be a terribly inefficient way to convey ephemeral messages.",
+          "createdAt": "2026-07-02T16:35:01Z",
+          "updatedAt": "2026-07-02T16:35:01Z"
+        }
+      ]
     },
     {
       "number": 6,
@@ -94,9 +110,17 @@
       "labels": [],
       "body": "The first paragraph in \"Signature Verification Before Processing\" says:\n```\nThe decryption flow necessarily produces plaintext before the signature can be\nverified: the recipient first decrypts the sender authentication data\n({{sender-data-encryption}}) to obtain the sender's leaf index, KEM output,\nand signature, then decrypts the HPKE ciphertext to obtain the\n`TargetedMessageContent`, and finally verifies the signature over the\n`TargetedMessageTBS` structure.\n```\n\nFrom what I can tell, `TargetedMessageTBS` does not include application data, but the above paragraph implies that it does.\nThe way structures are defined, would it not be possible to first decrypt sender auth data, then verify the signature over `TargetedMessageTBS`, which includes `kem_output`, and then finally use `kem_output` to decrypt application data?",
       "createdAt": "2026-05-15T11:09:56Z",
-      "updatedAt": "2026-05-15T11:09:56Z",
+      "updatedAt": "2026-07-02T16:37:21Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "raphaelrobert",
+          "authorAssociation": "MEMBER",
+          "body": "Good catch, the spec had not caught up with the code, and that part is now fixed in #7.",
+          "createdAt": "2026-07-02T16:37:21Z",
+          "updatedAt": "2026-07-02T16:37:21Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -209,6 +233,32 @@
       "mergeCommit": {
         "oid": "1eec114ab96f0093184b0c90e1cc1e6337f9f896"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDOPFs6J87tNyVv",
+      "title": "align with code & small overhaul & test vector",
+      "url": "https://github.com/mlswg/mls-targeted-messages/pull/7",
+      "state": "OPEN",
+      "author": "raphaelrobert",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "See detailed changes in the changelog section",
+      "createdAt": "2026-07-02T16:17:21Z",
+      "updatedAt": "2026-07-02T16:17:21Z",
+      "baseRepository": "mlswg/mls-targeted-messages",
+      "baseRefName": "main",
+      "baseRefOid": "1eec114ab96f0093184b0c90e1cc1e6337f9f896",
+      "headRepository": "mlswg/mls-targeted-messages",
+      "headRefName": "align-with-code",
+      "headRefOid": "e69ebd157b6029d39510a5c8fe12f218dfe46187",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
