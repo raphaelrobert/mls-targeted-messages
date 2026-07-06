@@ -18,7 +18,7 @@
 /versioned/
 Gemfile.lock
 archive.json
-draft-robert-mls-targeted-messages.xml
+draft-ietf-mls-targeted-messages.xml
 package-lock.json
 report.xml
 !requirements.txt

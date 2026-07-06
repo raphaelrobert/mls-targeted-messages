@@ -4,16 +4,16 @@
 
 This is the working area for the individual Internet-Draft, "MLS Targeted Messages".
 
-* [Editor's Copy](https://raphaelrobert.github.io/mls-targeted-messages/#go.draft-robert-mls-targeted-messages.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-robert-mls-targeted-messages)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-robert-mls-targeted-messages)
-* [Compare Editor's Copy to Individual Draft](https://raphaelrobert.github.io/mls-targeted-messages/#go.draft-robert-mls-targeted-messages.diff)
+* [Editor's Copy](https://mlswg.github.io/mls-targeted-messages/#go.draft-ietf-mls-targeted-messages.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-ietf-mls-targeted-messages)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-ietf-mls-targeted-messages)
+* [Compare Editor's Copy to Individual Draft](https://mlswg.github.io/mls-targeted-messages/#go.draft-ietf-mls-targeted-messages.diff)
 
 
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/raphaelrobert/mls-targeted-messages/blob/main/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/mlswg/mls-targeted-messages/blob/main/CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
