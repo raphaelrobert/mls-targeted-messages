@@ -672,7 +672,7 @@ targeted_message:
 # Change Log
 {:removeInRFC="true"}
 
-Changes since draft-ietf-mls-targeted-messages-00:
+draft-ietf-mls-targeted-messages-01:
 
 - Changed the intended status from Informational to Standards Track.
 - Added a `ciphertext_hash` field to `TargetedMessageTBS` so that the
