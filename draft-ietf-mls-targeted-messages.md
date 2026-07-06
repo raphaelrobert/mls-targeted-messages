@@ -17,8 +17,8 @@ venue:
   type: "Working Group"
   mail: "mls@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/mls/"
-  github: "raphaelrobert/mls-targeted-messages"
-  latest: "https://raphaelrobert.github.io/mls-targeted-messages/draft-robert-mls-targeted-messages.html"
+  github: "mlswg/mls-targeted-messages"
+  latest: "https://mlswg.github.io/mls-targeted-messages/draft-ietf-mls-targeted-messages.html"
 
 author:
  -
