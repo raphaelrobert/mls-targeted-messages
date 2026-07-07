@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-05T03:36:23.765179+00:00",
+  "timestamp": "2026-07-07T03:35:14.954160+00:00",
   "repo": "mlswg/mls-targeted-messages",
   "labels": [
     {
@@ -62,7 +62,7 @@
       "labels": [],
       "body": "As discussed at IETF 125, having a single TargetedMessage encrypted for multiple members at once, insures that if a single message is decrypted by multiple members, it had the same plaintext. This is a very desirable property. A client that does not want this property could sstill send distinct TargetedMessages with different plaintext to different members.\n",
       "createdAt": "2026-04-19T08:23:53Z",
-      "updatedAt": "2026-07-02T16:28:55Z",
+      "updatedAt": "2026-07-06T14:32:37Z",
       "closedAt": null,
       "comments": [
         {
@@ -71,6 +71,27 @@
           "body": "Targeted Messages are meant as a building block to build exactly this kind of extended functionality. An application can just create on common ciphertext and use TMs to encrypt the corresponding key to several recipients.\nAdding this functionality to the base construction would not make it more efficient due to how HPKE works.\nIn other words, I don't think we should include this because applications can already trivially do this.",
           "createdAt": "2026-07-02T16:28:55Z",
           "updatedAt": "2026-07-02T16:28:55Z"
+        },
+        {
+          "author": "rohanmahy",
+          "authorAssociation": "NONE",
+          "body": "> Targeted Messages are meant as a building block to build exactly this kind of extended functionality. An application can just create on common ciphertext and use TMs to encrypt the corresponding key to several recipients. Adding this functionality to the base construction would not make it more efficient due to how HPKE works. In other words, I don't think we should include this because applications can already trivially do this.\n\nThis is not trivial at all. The problem is sending a ciphertext that is verifiably common but does not leak the sender and recipient to other members of the group. Unless you have a signed wire format that binds this all together you are unlikely to get those properties.\n\nThink about it this way: Given an honest DS, two members that receive a valid targeted message with the same sender, epoch, and generation are assured that they received the same plaintext.",
+          "createdAt": "2026-07-06T06:41:10Z",
+          "updatedAt": "2026-07-06T06:46:14Z"
+        },
+        {
+          "author": "rohanmahy",
+          "authorAssociation": "NONE",
+          "body": "We can improve on the \"honest DS\" part as well with an AppAck-like mechanism or application-level mechanisms.",
+          "createdAt": "2026-07-06T06:46:56Z",
+          "updatedAt": "2026-07-06T06:46:56Z"
+        },
+        {
+          "author": "raphaelrobert",
+          "authorAssociation": "MEMBER",
+          "body": "I'm not sure I follow your thoughts, especially the part about the \"honest DS\". If a DS is honest, what exactly are you worried about?\n\nFirst, a few clarifications on metadata:\n - TMs encrypt the sender inside `encrypted_sender_auth_data`, so that an adversary that's not a group member cannot tell who the sender is by just looking at the TM. This aligns with the base protocol, which in turn mirrors Signal's sealed-sender concept.\n - TMs *do not* encrypt the recipient, as the DS needs this information to forward the TM to the recipient. Without it, the DS would have to forward a TM to everyone in the group. Note that the recipient is represented only by the leaf index, which makes it somewhat pseudonymous, depending on the app's architecture.\n\nI think it would help structure the discussion if you answered the following questions:\n - What exactly is your threat model? What capabilities does an attacker have?\n - What security guarantees would you like to achieve? In particular, how do they differ from what you already get today by sending 3 TMs with a wrapped key and one ciphertext?\n - TMs are based on HPKE, to stay aligned with the base protocol. HPKE is fundamentally a two-party protocol. What construction are you proposing instead?\n\n",
+          "createdAt": "2026-07-06T14:32:37Z",
+          "updatedAt": "2026-07-06T14:32:37Z"
         }
       ]
     },
@@ -103,15 +124,15 @@
       "id": "I_kwDOPFs6J88AAAABCXHadQ",
       "title": "TargetedMessageTBS does not include application data",
       "url": "https://github.com/mlswg/mls-targeted-messages/issues/6",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "istankovic",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "The first paragraph in \"Signature Verification Before Processing\" says:\n```\nThe decryption flow necessarily produces plaintext before the signature can be\nverified: the recipient first decrypts the sender authentication data\n({{sender-data-encryption}}) to obtain the sender's leaf index, KEM output,\nand signature, then decrypts the HPKE ciphertext to obtain the\n`TargetedMessageContent`, and finally verifies the signature over the\n`TargetedMessageTBS` structure.\n```\n\nFrom what I can tell, `TargetedMessageTBS` does not include application data, but the above paragraph implies that it does.\nThe way structures are defined, would it not be possible to first decrypt sender auth data, then verify the signature over `TargetedMessageTBS`, which includes `kem_output`, and then finally use `kem_output` to decrypt application data?",
       "createdAt": "2026-05-15T11:09:56Z",
-      "updatedAt": "2026-07-02T16:37:21Z",
-      "closedAt": null,
+      "updatedAt": "2026-07-06T10:52:07Z",
+      "closedAt": "2026-07-06T10:52:07Z",
       "comments": [
         {
           "author": "raphaelrobert",
@@ -119,6 +140,13 @@
           "body": "Good catch, the spec had not caught up with the code, and that part is now fixed in #7.",
           "createdAt": "2026-07-02T16:37:21Z",
           "updatedAt": "2026-07-02T16:37:21Z"
+        },
+        {
+          "author": "raphaelrobert",
+          "authorAssociation": "MEMBER",
+          "body": "Fixed via #7.",
+          "createdAt": "2026-07-06T10:52:07Z",
+          "updatedAt": "2026-07-06T10:52:07Z"
         }
       ]
     }
@@ -241,24 +269,82 @@
       "id": "PR_kwDOPFs6J87tNyVv",
       "title": "align with code & small overhaul & test vector",
       "url": "https://github.com/mlswg/mls-targeted-messages/pull/7",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "raphaelrobert",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "See detailed changes in the changelog section",
       "createdAt": "2026-07-02T16:17:21Z",
-      "updatedAt": "2026-07-02T16:17:21Z",
+      "updatedAt": "2026-07-06T10:45:10Z",
       "baseRepository": "mlswg/mls-targeted-messages",
       "baseRefName": "main",
       "baseRefOid": "1eec114ab96f0093184b0c90e1cc1e6337f9f896",
       "headRepository": "mlswg/mls-targeted-messages",
       "headRefName": "align-with-code",
       "headRefOid": "e69ebd157b6029d39510a5c8fe12f218dfe46187",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-07-06T10:45:10Z",
+      "mergedAt": "2026-07-06T10:45:09Z",
+      "mergedBy": "raphaelrobert",
+      "mergeCommit": {
+        "oid": "fcc75adda388314ca9d54156149dc05e826c9b17"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDOPFs6J87uThzd",
+      "title": "fix links and doc names",
+      "url": "https://github.com/mlswg/mls-targeted-messages/pull/8",
+      "state": "MERGED",
+      "author": "raphaelrobert",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-07-06T10:49:02Z",
+      "updatedAt": "2026-07-06T10:49:34Z",
+      "baseRepository": "mlswg/mls-targeted-messages",
+      "baseRefName": "main",
+      "baseRefOid": "fcc75adda388314ca9d54156149dc05e826c9b17",
+      "headRepository": "mlswg/mls-targeted-messages",
+      "headRefName": "fix-links-doc-names",
+      "headRefOid": "5838f5f9a6220a97a083fae51c0142761afa1cd2",
+      "closedAt": "2026-07-06T10:49:34Z",
+      "mergedAt": "2026-07-06T10:49:34Z",
+      "mergedBy": "raphaelrobert",
+      "mergeCommit": {
+        "oid": "70609cee6d6b0e3dfd640062a2a7112efe245a2c"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOPFs6J87uTt_6",
+      "title": "bump draft version",
+      "url": "https://github.com/mlswg/mls-targeted-messages/pull/9",
+      "state": "MERGED",
+      "author": "raphaelrobert",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-07-06T10:56:33Z",
+      "updatedAt": "2026-07-06T11:00:12Z",
+      "baseRepository": "mlswg/mls-targeted-messages",
+      "baseRefName": "main",
+      "baseRefOid": "70609cee6d6b0e3dfd640062a2a7112efe245a2c",
+      "headRepository": "mlswg/mls-targeted-messages",
+      "headRefName": "bump-draft-version",
+      "headRefOid": "5de412884b28801a881df1cd243a33b507350b02",
+      "closedAt": "2026-07-06T11:00:11Z",
+      "mergedAt": "2026-07-06T11:00:11Z",
+      "mergedBy": "raphaelrobert",
+      "mergeCommit": {
+        "oid": "5dc32fc3f6cce0c6d2fe05facb75112aec284dc9"
+      },
       "comments": [],
       "reviews": []
     }
