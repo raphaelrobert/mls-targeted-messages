@@ -19,18 +19,18 @@ authentication, and binding to the group state.
 <meta content="draft-ietf-mls-targeted-messages-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.34.0
-    Python 3.14.5
+    Python 3.14.7
     ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.10.0
+    platformdirs 4.11.3
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.1
+    wcwidth 0.8.2
 -->
 <link href="draft-ietf-mls-targeted-messages.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -66,7 +66,6 @@ authentication, and binding to the group state.
   src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: italic;
@@ -115,7 +114,6 @@ authentication, and binding to the group state.
   src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: normal;
@@ -180,7 +178,6 @@ authentication, and binding to the group state.
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 }
 
 @font-face {
@@ -1049,11 +1046,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Messaging Layer Security (MLS) Targeted </td>
-<td class="right">July 2026</td>
+<td class="right">August 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Robert</td>
-<td class="center">Expires 3 January 2027</td>
+<td class="center">Expires 20 February 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1063,12 @@ svg {
 <dd class="internet-draft">draft-ietf-mls-targeted-messages-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-02" class="published">2 July 2026</time>
+<time datetime="2026-08-19" class="published">19 August 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-03">3 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-02-20">20 February 2027</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1097,7 +1094,7 @@ authentication, and binding to the group state.<a href="#section-abstract-1" cla
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://raphaelrobert.github.io/mls-targeted-messages/draft-robert-mls-targeted-messages.html">https://raphaelrobert.github.io/mls-targeted-messages/draft-robert-mls-targeted-messages.html</a></span>.
+        The latest revision of this draft can be found at <span><a href="https://mlswg.github.io/mls-targeted-messages/draft-ietf-mls-targeted-messages.html">https://mlswg.github.io/mls-targeted-messages/draft-ietf-mls-targeted-messages.html</a></span>.
         Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-ietf-mls-targeted-messages/">https://datatracker.ietf.org/doc/draft-ietf-mls-targeted-messages/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">
         Discussion of this document takes place on the
@@ -1105,7 +1102,7 @@ authentication, and binding to the group state.<a href="#section-abstract-1" cla
         which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/mls/">https://mailarchive.ietf.org/arch/browse/mls/</a></span>.
         Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/mls/">https://www.ietf.org/mailman/listinfo/mls/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
 <p id="section-note.1-4">Source for this draft and an issue tracker can be found at
-        <span><a href="https://github.com/raphaelrobert/mls-targeted-messages">https://github.com/raphaelrobert/mls-targeted-messages</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+        <span><a href="https://github.com/mlswg/mls-targeted-messages">https://github.com/mlswg/mls-targeted-messages</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1126,7 +1123,7 @@ authentication, and binding to the group state.<a href="#section-abstract-1" cla
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 20 February 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1207,16 +1204,19 @@ authentication, and binding to the group state.<a href="#section-abstract-1" cla
                 <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-group-state-binding" class="internal xref">Group State Binding</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
-                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-signature-verification-befo" class="internal xref">Signature Verification Before Processing</a></p>
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-message-field-binding" class="internal xref">Message Field Binding</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4">
-                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-forward-secrecy" class="internal xref">Forward Secrecy</a></p>
+                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-signature-verification-befo" class="internal xref">Signature Verification Before Processing</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.5">
-                <p id="section-toc.1-1.8.2.5.1"><a href="#section-8.5" class="auto internal xref">8.5</a>.  <a href="#name-sender-identity-confidentia" class="internal xref">Sender Identity Confidentiality</a></p>
+                <p id="section-toc.1-1.8.2.5.1"><a href="#section-8.5" class="auto internal xref">8.5</a>.  <a href="#name-forward-secrecy" class="internal xref">Forward Secrecy</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.6">
-                <p id="section-toc.1-1.8.2.6.1"><a href="#section-8.6" class="auto internal xref">8.6</a>.  <a href="#name-replay-protection" class="internal xref">Replay Protection</a></p>
+                <p id="section-toc.1-1.8.2.6.1"><a href="#section-8.6" class="auto internal xref">8.6</a>.  <a href="#name-sender-identity-confidentia" class="internal xref">Sender Identity Confidentiality</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.7">
+                <p id="section-toc.1-1.8.2.7.1"><a href="#section-8.7" class="auto internal xref">8.7</a>.  <a href="#name-replay-protection" class="internal xref">Replay Protection</a></p>
 </li>
             </ul>
 </li>
@@ -1345,13 +1345,9 @@ struct {
 } TargetedMessageSenderAuthData;
 
 struct {
-  opaque group_id&lt;V&gt;;
-  uint64 epoch;
   uint32 recipient_leaf_index;
-  opaque authenticated_data&lt;V&gt;;
   uint32 sender_leaf_index;
-  opaque kem_output&lt;V&gt;;
-} TargetedMessageTBM;
+} TargetedMessageContextData;
 
 struct {
   ProtocolVersion version = mls10;
@@ -1466,8 +1462,9 @@ The corresponding <code>psk_id</code> parameter is the serialized <code>PSKId</c
         </h3>
 <p id="section-5.1-1">Targeted messages can include additional authenticated data (AAD) in the
 <code>TargetedMessage.authenticated_data</code> field. This field is used to carry
-application-specific data that is authenticated but not encrypted. The AAD is
-included in the <code>TargetedMessageTBM</code> struct.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+application-specific data that is authenticated but not encrypted. The content
+of this field is used as the <code>aad</code> parameter of the HPKE encryption
+(<a href="#application-data-encryption" class="auto internal xref">Section 6.2</a>).<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1516,34 +1513,31 @@ struct {
 } TargetedMessageContext;
 
 label = "MLS 1.0 TargetedMessageData"
-context = ""
+context = TargetedMessageContextData
 </pre><a href="#section-6.2-3" class="pilcrow">¶</a>
 </div>
 <p id="section-6.2-4">The <code>TargetedMessageContext</code> struct follows the same structure as <code>EncryptContext</code>
 in <span><a href="https://rfc-editor.org/rfc/rfc9420#section-5.1.3" class="relref">Section 5.1.3</a> of [<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>, but uses PSK mode rather than Base mode. The
-<code>context</code> field is empty; the message is bound to the group state through the
-<code>targeted_message_psk</code>, as described in <a href="#group-state-binding" class="auto internal xref">Section 8.2</a>.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
+<code>context</code> field is the serialized <code>TargetedMessageContextData</code> struct, binding
+the encryption to the recipient and sender leaf indices. The message is bound
+to the group state through the <code>targeted_message_psk</code>, as described in
+<a href="#group-state-binding" class="auto internal xref">Section 8.2</a>.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
 <p id="section-6.2-5">The <code>TargetedMessageContext</code> struct is serialized as <code>hpke_context</code> and is used
 by both the sender and the recipient. The recipient's leaf node HPKE encryption
 key from the ratchet tree of the epoch specified in the <code>TargetedMessage</code> is
 used as the recipient's public key <code>recipient_node_public_key</code> for the HPKE
 encryption.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
-<p id="section-6.2-6">The <code>TargetedMessageTBM</code> struct is serialized as <code>targeted_message_tbm</code>, and is
-used as the <code>aad</code> parameter for the HPKE encryption. Note that
-<code>targeted_message_tbm</code> contains the <code>kem_output</code> of the HPKE encapsulation.
-The sender therefore cannot use the single-shot <code>SealPSK</code> API defined in
-<span><a href="https://rfc-editor.org/rfc/rfc9180#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>, because the <code>aad</code> parameter depends on the
-<code>kem_output</code> that <code>SealPSK</code> would produce. Instead, the sender encapsulates
-first, constructs the AAD, and then seals:<a href="#section-6.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.2-6">The content of the <code>TargetedMessage.authenticated_data</code> field is used as the
+<code>aad</code> parameter for the HPKE encryption. The sender uses the single-shot
+<code>SealPSK</code> API:<a href="#section-6.2-6" class="pilcrow">¶</a></p>
 <div class="lang-tls sourcecode" id="section-6.2-7">
 <pre>
-(kem_output, context) = SetupPSKS(recipient_node_public_key,
-                                  hpke_context,
-                                  targeted_message_psk,
-                                  psk_id)
-
-ciphertext = context.Seal(targeted_message_tbm,
-                          targeted_message_content)
+(kem_output, ciphertext) = SealPSK(recipient_node_public_key,
+                                   hpke_context,
+                                   authenticated_data,
+                                   targeted_message_content,
+                                   targeted_message_psk,
+                                   psk_id)
 </pre><a href="#section-6.2-7" class="pilcrow">¶</a>
 </div>
 <p id="section-6.2-8">In full, the sender performs the following steps in order:<a href="#section-6.2-8" class="pilcrow">¶</a></p>
@@ -1553,51 +1547,39 @@ ciphertext = context.Seal(targeted_message_tbm,
 <code>sender_auth_data_secret</code> (<a href="#sender-data-encryption" class="auto internal xref">Section 6.3</a>).<a href="#section-6.2-9.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.2-9.2">
-            <p id="section-6.2-9.2.1">Encapsulate to <code>recipient_node_public_key</code> using <code>SetupPSKS</code> to obtain
-<code>kem_output</code> and the HPKE sender context.<a href="#section-6.2-9.2.1" class="pilcrow">¶</a></p>
+            <p id="section-6.2-9.2.1">Compute <code>kem_output</code> and <code>ciphertext</code> by calling <code>SealPSK</code> with the
+serialized <code>TargetedMessageContent</code> as plaintext.<a href="#section-6.2-9.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.2-9.3">
-            <p id="section-6.2-9.3.1">Serialize the <code>TargetedMessageTBM</code> struct, which includes <code>kem_output</code>, as
-<code>targeted_message_tbm</code>.<a href="#section-6.2-9.3.1" class="pilcrow">¶</a></p>
+            <p id="section-6.2-9.3.1">Compute <code>ciphertext_hash</code> from <code>ciphertext</code>, construct the
+<code>TargetedMessageTBS</code> struct, and compute the <code>signature</code> as described in
+<a href="#authentication" class="auto internal xref">Section 5</a>.<a href="#section-6.2-9.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.2-9.4">
-            <p id="section-6.2-9.4.1">Compute <code>ciphertext</code> by calling <code>Seal</code> on the HPKE sender context with
-<code>targeted_message_tbm</code> as <code>aad</code> and the serialized <code>TargetedMessageContent</code>
-as plaintext.<a href="#section-6.2-9.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-6.2-9.5">
-            <p id="section-6.2-9.5.1">Compute <code>ciphertext_hash</code> from <code>ciphertext</code>, construct the
-<code>TargetedMessageTBS</code> struct, and compute the <code>signature</code> as described in
-<a href="#authentication" class="auto internal xref">Section 5</a>.<a href="#section-6.2-9.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-6.2-9.6">
-            <p id="section-6.2-9.6.1">Assemble the <code>TargetedMessageSenderAuthData</code> struct from
+            <p id="section-6.2-9.4.1">Assemble the <code>TargetedMessageSenderAuthData</code> struct from
 <code>sender_leaf_index</code>, <code>signature</code>, and <code>kem_output</code>, and encrypt it as
 described in <a href="#sender-data-encryption" class="auto internal xref">Section 6.3</a>, using a sample of the <code>ciphertext</code>
-computed above.<a href="#section-6.2-9.6.1" class="pilcrow">¶</a></p>
+computed above.<a href="#section-6.2-9.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-6.2-10">The <code>TargetedMessageSenderAuthData.kem_output</code> field is set to <code>kem_output</code>,
 and the <code>TargetedMessage.ciphertext</code> field is set to <code>ciphertext</code>.<a href="#section-6.2-10" class="pilcrow">¶</a></p>
-<p id="section-6.2-11">The recipient learns the <code>kem_output</code> by decrypting
-<code>encrypted_sender_auth_data</code> before decrypting the content, and can therefore
-use the single-shot API to decrypt the content:<a href="#section-6.2-11" class="pilcrow">¶</a></p>
+<p id="section-6.2-11">The recipient learns the <code>kem_output</code> and the <code>sender_leaf_index</code> by
+decrypting <code>encrypted_sender_auth_data</code> before decrypting the content. The
+<code>sender_leaf_index</code> is needed to construct the <code>TargetedMessageContextData</code>
+struct:<a href="#section-6.2-11" class="pilcrow">¶</a></p>
 <div class="lang-tls sourcecode" id="section-6.2-12">
 <pre>
 targeted_message_content = OpenPSK(kem_output,
                   recipient_node_private_key,
                   hpke_context,
-                  targeted_message_tbm,
+                  authenticated_data,
                   ciphertext,
                   targeted_message_psk,
                   psk_id)
 </pre><a href="#section-6.2-12" class="pilcrow">¶</a>
 </div>
-<p id="section-6.2-13">The functions <code>SetupPSKS</code>, <code>Context.Seal</code>, and <code>OpenPSK</code> are defined in
-<span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>. The two-step flow on the sender side produces the same
-<code>(kem_output, ciphertext)</code> as <code>SealPSK</code> would with the same inputs; the
-single-shot API merely cannot express an <code>aad</code> that depends on its own
-<code>kem_output</code>.<a href="#section-6.2-13" class="pilcrow">¶</a></p>
+<p id="section-6.2-13">The functions <code>SealPSK</code> and <code>OpenPSK</code> are defined in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-6.2-13" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sender-data-encryption">
@@ -1712,7 +1694,7 @@ node.<a href="#section-7.1-2.3.1" class="pilcrow">¶</a></p>
         </ul>
 <p id="section-7.1-3">Support for past epochs is <span class="bcp14">OPTIONAL</span>, accepting only the current epoch is the
 most conservative behavior. Retaining key material from past epochs weakens
-the Forward Secrecy properties described in <a href="#forward-secrecy" class="auto internal xref">Section 8.4</a>: targeted
+the Forward Secrecy properties described in <a href="#forward-secrecy" class="auto internal xref">Section 8.5</a>: targeted
 messages for an epoch remain decryptable for as long as that epoch's key
 material exists. Applications that accept messages from past epochs <span class="bcp14">SHOULD</span>
 bound the number of retained epochs and <span class="bcp14">SHOULD</span> delete the corresponding key
@@ -1763,32 +1745,51 @@ exporter-derived PSK commits to the full group state of the specified epoch,
 including the tree hash and the confirmed transcript hash.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="signature-verification-before-processing">
+<div id="message-field-binding">
 <section id="section-8.3">
-        <h3 id="name-signature-verification-befo">
-<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-signature-verification-befo" class="section-name selfRef">Signature Verification Before Processing</a>
+        <h3 id="name-message-field-binding">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-message-field-binding" class="section-name selfRef">Message Field Binding</a>
         </h3>
-<p id="section-8.3-1">Because the PSK is shared among all group members and each member's HPKE
+<p id="section-8.3-1">The HPKE encryption is bound to the fields of a targeted message at one or
+more layers. The <code>group_id</code> and <code>epoch</code> are bound through the <code>psk_id</code> and
+through the epoch-derived PSK, both of which enter the HPKE key schedule. The
+leaf indices of the recipient and the sender are bound through the HPKE <code>info</code>
+input, which carries the <code>TargetedMessageContextData</code> struct. The
+<code>authenticated_data</code> field is authenticated directly as the HPKE <code>aad</code>
+parameter. The <code>kem_output</code> is bound through the HPKE key schedule, which
+derives the encryption keys from the KEM shared secret. For the DHKEM variants
+used by the cipher suites of <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>, the shared-secret derivation also
+includes the <code>kem_output</code> itself. Independently of these HPKE-layer bindings,
+the sender's signature over the <code>TargetedMessageTBS</code> struct covers all of the
+fields above together with the hash of the ciphertext.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="signature-verification-before-processing">
+<section id="section-8.4">
+        <h3 id="name-signature-verification-befo">
+<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-signature-verification-befo" class="section-name selfRef">Signature Verification Before Processing</a>
+        </h3>
+<p id="section-8.4-1">Because the PSK is shared among all group members and each member's HPKE
 public key is available in the ratchet tree, any group member can construct
 HPKE ciphertext that decrypts successfully while claiming a different sender
 identity. The signature is the sole mechanism that binds the message to the
-claimed sender.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
-<p id="section-8.3-2">The <code>TargetedMessageTBS</code> structure covers the <code>kem_output</code> and a hash of the
+claimed sender.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
+<p id="section-8.4-2">The <code>TargetedMessageTBS</code> structure covers the <code>kem_output</code> and a hash of the
 <code>ciphertext</code>, both of which are available before content decryption: the
 former from the decrypted sender authentication data
 (<a href="#sender-data-encryption" class="auto internal xref">Section 6.3</a>), the latter from the wire format itself.
 <a href="#recipient-validation" class="auto internal xref">Section 7</a> therefore requires the recipient to verify the
 signature before decrypting the HPKE ciphertext, ensuring that plaintext is
 never produced from a message whose claimed sender has not been
-authenticated.<a href="#section-8.3-2" class="pilcrow">¶</a></p>
+authenticated.<a href="#section-8.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="forward-secrecy">
-<section id="section-8.4">
+<section id="section-8.5">
         <h3 id="name-forward-secrecy">
-<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-forward-secrecy" class="section-name selfRef">Forward Secrecy</a>
+<a href="#section-8.5" class="section-number selfRef">8.5. </a><a href="#name-forward-secrecy" class="section-name selfRef">Forward Secrecy</a>
         </h3>
-<p id="section-8.4-1">Targeted messages encrypt directly to the recipient's leaf node HPKE encryption
+<p id="section-8.5-1">Targeted messages encrypt directly to the recipient's leaf node HPKE encryption
 key. Unlike application messages in <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>, which derive per-message keys
 from a secret tree, targeted messages have no per-message key derivation.
 Compromising the recipient's leaf private key therefore exposes all targeted
@@ -1798,40 +1799,40 @@ the recipient deleting the previous epoch's leaf private key. Applications that
 require stronger forward secrecy guarantees <span class="bcp14">SHOULD</span> advance the epoch frequently.
 Accepting targeted messages from past epochs requires retaining old key
 material and further weakens forward secrecy, as described in
-<a href="#messages-from-past-epochs" class="auto internal xref">Section 7.1</a>.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
+<a href="#messages-from-past-epochs" class="auto internal xref">Section 7.1</a>.<a href="#section-8.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sender-identity-confidentiality">
-<section id="section-8.5">
+<section id="section-8.6">
         <h3 id="name-sender-identity-confidentia">
-<a href="#section-8.5" class="section-number selfRef">8.5. </a><a href="#name-sender-identity-confidentia" class="section-name selfRef">Sender Identity Confidentiality</a>
+<a href="#section-8.6" class="section-number selfRef">8.6. </a><a href="#name-sender-identity-confidentia" class="section-name selfRef">Sender Identity Confidentiality</a>
         </h3>
-<p id="section-8.5-1">The <code>sender_auth_data_secret</code> used to encrypt the
+<p id="section-8.6-1">The <code>sender_auth_data_secret</code> used to encrypt the
 <code>TargetedMessageSenderAuthData</code> is derived from the MLS exporter
 (<a href="#sender-data-encryption" class="auto internal xref">Section 6.3</a>) and is available to all group members. Sender
 identity is therefore protected from the Delivery Service and from entities
 outside the group, but not from other group members who obtain the encrypted
-message.<a href="#section-8.5-1" class="pilcrow">¶</a></p>
-<p id="section-8.5-2">The encryption mechanism is the same as the one used for <code>MLSSenderData</code> in
+message.<a href="#section-8.6-1" class="pilcrow">¶</a></p>
+<p id="section-8.6-2">The encryption mechanism is the same as the one used for <code>MLSSenderData</code> in
 <span><a href="https://rfc-editor.org/rfc/rfc9420#section-6.3.2" class="relref">Section 6.3.2</a> of [<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>, and the analysis of <span><a href="https://rfc-editor.org/rfc/rfc9420#section-16.3" class="relref">Section 16.3</a> of [<a href="#RFC9420" class="cite xref">RFC9420</a>]</span> applies equally to targeted messages. In particular, using the
 same <code>sender_auth_data_secret</code> with the same ciphertext sample more than once
 would reuse an AEAD key and nonce pair; with the AEAD algorithms of the
 cipher suites defined in <span>[<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>, the probability of two ciphertext
-samples colliding is no more than 2^-128.<a href="#section-8.5-2" class="pilcrow">¶</a></p>
+samples colliding is no more than 2^-128.<a href="#section-8.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="replay-protection">
-<section id="section-8.6">
+<section id="section-8.7">
         <h3 id="name-replay-protection">
-<a href="#section-8.6" class="section-number selfRef">8.6. </a><a href="#name-replay-protection" class="section-name selfRef">Replay Protection</a>
+<a href="#section-8.7" class="section-number selfRef">8.7. </a><a href="#name-replay-protection" class="section-name selfRef">Replay Protection</a>
         </h3>
-<p id="section-8.6-1">Targeted messages do not include a generation counter or nonce at the protocol
+<p id="section-8.7-1">Targeted messages do not include a generation counter or nonce at the protocol
 level. A captured targeted message can therefore be replayed within the same
 epoch and will pass all validation checks. However, targeted messages are a
 stateless one-shot mechanism: replaying a message causes the recipient to see
 duplicate content but does not change any group state. Applications that require
 replay detection <span class="bcp14">SHOULD</span> include a unique nonce in the <code>authenticated_data</code>
-field and track previously seen values.<a href="#section-8.6-1" class="pilcrow">¶</a></p>
+field and track previously seen values.<a href="#section-8.7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2035,30 +2036,30 @@ epoch: 1
 sender_leaf_index: 0
 recipient_leaf_index: 1
 padding_length: 0
-group_id: cc545d00feed847c9fcba01ca8b4987a
+group_id: 311ba8933b9e62836115c4b5c12b5941
 exporter_secret:
-  05971f5e2b9993bcafa0a3d56807244c66a3c93b4e439c7bd5cdd169be0f4381
+  364e2fa834f2a8ba35cf69b1b3d3505bbcce858b96b2d3b6b2c29d9512c3323f
 sender_leaf_node:
-  20261fe9ecdc72ea51d0b6fca9ca9ac9f60cce427ffefefe5b69f9b1c6ddfe03
-  7920086ea8e6a03548f2c0c01822d17a7b740246fade24764cea0bfb15dab691
-  7acd00010673656e64657202000106000100020003000002000101000000006a
-  467e24000000006ab54a34004040864a206fc50f108bdfa0444aefb4e128a66b
-  9eb41b9c6cbf966cfd4ed512a7ba487fcb4b0e18999f67ee08a301538c3f7d92
-  b28ac24103c61b92192df4d52905
+  209d45d3bc61870be7febcd3d88f2f1bf38e6389f2150b3d4e7aad84ab5f35bf
+  162015bd303cc11408a5401fb3695908392944903ea862ff3ccd3c4b7f664c50
+  32b000010673656e64657202000106000100020003000002000101000000006a
+  84aa3d000000006af3764d004040193ca3567a822efd291af3832f10a45bf509
+  435653ba5b9e10ba0cacbf7b9e5996e6e5c250ea4cb6045dd417b2288a4cdf1c
+  a766acc19fb26a5abd9c2585d30b
 recipient_encryption_priv:
-  26bd8122d929b7eb26efb4669803d5faffe166027c33a4b6965379b452978d7f
+  f71f2725c2c080b79e0802b4f765811f1e58c4635e14b5dd04eb3435f79da964
 authenticated_data:
 application_data:
   4b41542074657374207061796c6f616420666f72207461726765746564206d65
   737361676573
 targeted_message:
-  0001000610cc545d00feed847c9fcba01ca8b4987a0000000000000001000000
-  010040775fce6b31a536d82b8622160021b9f8d334a0f90215041a63f9bbbab9
-  904f01d4d0639f70cb46058325779b5183a341ad21d83bb541930994320ab0eb
-  aeade031efc60de304661bdac6bde5746c152f39dd083664cddd07d93ddc7361
-  fc49f928044a6971c270dfec5d2d0ac6b63053f0c56308332b3eb137baeda80e
-  696a69ce98d42e38d68823767268900a4af6ea2b0973a099c82a51268a318c6c
-  699e774895879be7c35c1e7f557fcc1733bd93
+  0001000610311ba8933b9e62836115c4b5c12b59410000000000000001000000
+  010040775fbfc85a4e0b69859f02401eb6f07e9f9f3ec43130afe21c87a536e5
+  d78c1b4d0da2559cfb4897679964943ceaaa86b1c70ea26b925d76bc04beea9f
+  558b72ef64165bfcb35faf45fc35f3d1ce913c627b4d76655d1454f635760485
+  aa0ea8d7ce4fa25dff989167120695fe089445d6cf18327aa2a78a3738bb223e
+  1a775bf65a009d800e1db29ffcf501d853beaa65018abfce91eac6688798ad35
+  504f414156b5034f2b25b500a8154f3fa5ce46
 </pre><a href="#appendix-A.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2075,30 +2076,30 @@ epoch: 5
 sender_leaf_index: 0
 recipient_leaf_index: 2
 padding_length: 64
-group_id: 819eec2f706ac61ee9bafd7b9fd31cf7
+group_id: cec6d465ef97274c8982ca575cd95070
 exporter_secret:
-  249a5afd41a1f2fea3b3f3acf23a2e8be12067ef1e9922663287204be7571f00
+  8088ef5b35e08dc61f814d6ec143922f2117d259d2dc7fb3b5c63815ddd719cd
 sender_leaf_node:
-  2060a9e120484d9c6506aeff9749bbca4ee725c40b6575ecaf080d392323584b
-  2520f3791381dd844d3c5d9b900ed98e69dd424a5509b69789629ae0ede99689
-  cbf100010673656e64657202000106000100020003000002000101000000006a
-  467e24000000006ab54a34004040eef8e9ba566bfe53d663cdbd1285c5d10998
-  e95b9fca89452629757f454b11f639df15b4200a1c32691015ca881ac9cdf550
-  831c6d89fdaed85b5efb21461d0d
+  204af872ec9dc29e630d6570018567bdb5f652efe40b08ff74f8a01cb0a6f45f
+  642010bbefeb163c87f70b0848886495031793cc990057b295c135ad0a0f4951
+  913400010673656e64657202000106000100020003000002000101000000006a
+  84aa3d000000006af3764d0040409c571036e910fd86e1144b1de53be5ea917d
+  21a71491e359bf5ac2d75f7f9c6dbc0271dcdb2baad25fba06a3f96fa002e6e6
+  2becaaebd109a85c438c57849903
 recipient_encryption_priv:
-  fbe8a1258df29b81fe1e0fa7cf3b1048f4be9309a5590ab1e922eb7ba4bfa49f
+  40ab1ce3c604502d64737ca974fe63f75255fe82629830580915271074728613
 authenticated_data: 726571756573742d69643d3432
 application_data: 7365636f6e64207461726765746564207061796c6f6164
 targeted_message:
-  0001000610819eec2f706ac61ee9bafd7b9fd31cf70000000000000005000000
-  020d726571756573742d69643d343240773a219020641baacc55e5b762759721
-  0fc36b1e65be4c362f575a3b7d69eceae55eb6419c1d69a891f78ea9986f819d
-  03c48986009182483818722da3df2f8e875a8a9226511adbba26532d223c7229
-  4679b9ff52460d68df08ac61e76c906f43e0711e02f49f2cc23327a475fcb348
-  b1ca7ef919feaaf44068c83943bc53e8055ce739cb31a6bcc9264b11130f1844
-  575caf153b0d46ed98c51f53581cda073a7936bf9acf620738fa001c3fc049ed
-  94a17455cabd088bfb00efc2bed7a8ae49dc7a8672a88d0936bc157f1f8487b8
-  719d2049c07eddf0762c2802bdb73c26274f
+  0001000610cec6d465ef97274c8982ca575cd950700000000000000005000000
+  020d726571756573742d69643d343240776ca1ff7a07b85d30f2b6d8edb7bcc6
+  a4c1894eddc0544e07487ffa556fc362ff08651a538903a1cba05719c4f4389c
+  d3fa8a8fc9c3bfd3413d1e056051f6fdc7d49a7232fae97c7ab1c728f5d2b241
+  bdf21fe1a80e11ec3209b8e65f86a15941641eb59603c8699fe27f281a852413
+  2cb46eea89d1867f4068122ad697360df0574515871b3f02341484e290bc36ec
+  41decb2959b599d36e8297d912c2f5bfa36b3d34b281e9de5d8c3b560ce0c538
+  197f95f2026c604368a74d31fc6b5c79f5d2f00c961febd70d60f5b285cd74c3
+  85765eb4647d1267bf0e765adc8f7bdd5e13
 </pre><a href="#appendix-A.2-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2115,31 +2116,31 @@ epoch: 42
 sender_leaf_index: 3
 recipient_leaf_index: 7
 padding_length: 128
-group_id: 70a9204973aff6642734f9ba6b5792c6
+group_id: 23dc0fe9856047b5c71923ac5d592a93
 exporter_secret:
-  2a1691e01a751a5e22a3906633f78435b14f1b313124338d9896e8b49cb59fef
+  f9ab4110785847cba7496869904a261e9172b75eb8d9ba4947f75fc5b88c5646
 sender_leaf_node:
-  206e9de742e7abd12d797ffb94e124000dbeaf94dcccc6a70b55fca99a321980
-  1d206f84c7f10dc4ecfe93952108ffb0904825a199b1f37aeac4aedb848a166e
-  1d8300010673656e64657202000106000100020003000002000101000000006a
-  467e24000000006ab54a3400404075ec3f38b4d0d35a7b5a42f85416c26e3e56
-  e30d03827adeaa2319b187fac34bf1f108dca9d17274416d8dbf7ec03ad02a56
-  d80c9e0c755286d0b447fc40e802
+  20990e2dde91ecb51ae5329ff10a5812f585fe6ba812d904311a31936772b48c
+  0c20cf05e83753d7b3fc4590c5a47479ce04d0edd0f5e37f1b0a3f20b291addc
+  691d00010673656e64657202000106000100020003000002000101000000006a
+  84aa3d000000006af3764d00404066f3a41321de29035e23cf2ffe385e5e0c0e
+  671532482faf3512ad5f7a5865af2e83256485445acbc56b4a0f15c465604f96
+  83570833b70599e6cd3b37ae2d04
 recipient_encryption_priv:
-  89a94b207c3bf5b9ba9a704b689ec56437952f1ada84883e3b2225618c61b75d
+  13aebde807db75e8f7b9e5cdd0e4c889bffbd3cd62c391c50f7d1611ca47d11d
 authenticated_data:
 application_data:
 targeted_message:
-  000100061070a9204973aff6642734f9ba6b5792c6000000000000002a000000
-  07004077cd789de01be4a55d679fc7551e3ca215de779efb874b905911ec7a74
-  0ce2c7fb4c71356aae83dcd8a0ba96d64cf3e5a4413af85eabd4fef58d100396
-  581a69a20516c1cef76bc76b5caedcf17ce1b3d89118e3b1c0ac974a6f78fbd4
-  3b9cb97098d2697f97f0edeb3a403d4f3683d22fabbb6da67c16154091ce8156
-  d3d5057e803f17af6f88d59f4fe70e254a82dbc5037f86f81a8c8ac0eee77396
-  fcb0f97f5ad7a3100ac20b621563f6bb3acd5bc5a8cac3479a041e93e737c8fc
-  255b0c4fd93c601e648658c76a7b7e1db60610111b04f1539c6ea5d76d66a3cc
-  16cd8ca078ef72f460dfd7adc6be27f11b435aed87f46a6cb9a1b8d3667d084e
-  0144e65839be751022d26f2e65e5
+  000100061023dc0fe9856047b5c71923ac5d592a93000000000000002a000000
+  070040770b3f3769a18a143ff580af0a6c29a9a653898c6c51b34dcbe95811bf
+  870198a592af5311f32d4cd11ebcea783f74550ff1128dc41de90e80d62a79cb
+  f26ca2484a0c6b315b6bdd4919ce69e8a1b48ef4a7c7082e175d3964cc9ef503
+  096c7b90dc67aa2494d227986cc05eefdc0456f6540a895cc97e554091882473
+  f35d73abffc0d174925a8126ed3463ae1277e7fa83f4b39972bcde272c9aa61a
+  a9fc746db915a9aca457e3d97c2a9c907a099d5f19ee04ec3a93f67435a68951
+  83a319a484dc1687fb5e6ff8a8695216764c3af47d1077930cef4086b2fa52ae
+  55347a07eb6b0480a99d05fb25363f7aa719f0507c9cba361867122f1dc4ea6e
+  417165381ebf4e5332ae932900f7
 </pre><a href="#appendix-A.3-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2152,50 +2153,73 @@ targeted_message:
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-change-log" class="section-name selfRef">Change Log</a>
       </h2>
 <p id="appendix-B-1">This section is to be removed before publishing as an RFC.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2">Changes since draft-ietf-mls-targeted-messages-00:<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">draft-ietf-mls-targeted-messages-02:<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-3.1">
-          <p id="appendix-B-3.1.1">Changed the intended status from Informational to Standards Track.<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.1.1">Replaced the <code>TargetedMessageTBM</code> struct with the
+<code>TargetedMessageContextData</code> struct, which carries the leaf indices and is
+used as the <code>context</code> field of the HPKE info.<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.2">
-          <p id="appendix-B-3.2.1">Added a <code>ciphertext_hash</code> field to <code>TargetedMessageTBS</code> so that the
-signature covers the message content; <code>TargetedMessageTBM</code> now carries
-<code>sender_leaf_index</code> and <code>kem_output</code> directly.<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.2.1">Used the content of the <code>authenticated_data</code> field directly as the HPKE
+<code>aad</code> parameter.<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.3">
-          <p id="appendix-B-3.3.1">Replaced the single-shot <code>SealPSK</code> call with <code>SetupPSKS</code> followed by
-<code>Context.Seal</code>, and specified the full sender-side order of operations.<a href="#appendix-B-3.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.3.1">Replaced the two-step <code>SetupPSKS</code> and <code>Context.Seal</code> flow with the
+single-shot <code>SealPSK</code> API, which is possible now that the AAD no longer
+depends on the <code>kem_output</code>.<a href="#appendix-B-3.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.4">
-          <p id="appendix-B-3.4.1">Specified the recipient-side processing steps, including signature
-verification before content decryption.<a href="#appendix-B-3.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.4.1">Added a security consideration describing how each message field is bound.<a href="#appendix-B-3.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.5">
-          <p id="appendix-B-3.5.1">Emptied the <code>context</code> field of <code>TargetedMessageContext</code>; the group state
+          <p id="appendix-B-3.5.1">Updated the test vectors.<a href="#appendix-B-3.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-B-4">draft-ietf-mls-targeted-messages-01:<a href="#appendix-B-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B-5.1">
+          <p id="appendix-B-5.1.1">Changed the intended status from Informational to Standards Track.<a href="#appendix-B-5.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-5.2">
+          <p id="appendix-B-5.2.1">Added a <code>ciphertext_hash</code> field to <code>TargetedMessageTBS</code> so that the
+signature covers the message content; <code>TargetedMessageTBM</code> now carries
+<code>sender_leaf_index</code> and <code>kem_output</code> directly.<a href="#appendix-B-5.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-5.3">
+          <p id="appendix-B-5.3.1">Replaced the single-shot <code>SealPSK</code> call with <code>SetupPSKS</code> followed by
+<code>Context.Seal</code>, and specified the full sender-side order of operations.<a href="#appendix-B-5.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-5.4">
+          <p id="appendix-B-5.4.1">Specified the recipient-side processing steps, including signature
+verification before content decryption.<a href="#appendix-B-5.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-5.5">
+          <p id="appendix-B-5.5.1">Emptied the <code>context</code> field of <code>TargetedMessageContext</code>; the group state
 binding is provided by the PSK, as described in the new Group State
-Binding security consideration.<a href="#appendix-B-3.5.1" class="pilcrow">¶</a></p>
+Binding security consideration.<a href="#appendix-B-5.5.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-B-3.6">
-          <p id="appendix-B-3.6.1">Added a Cryptographic Algorithms section binding all operations to the
-group's cipher suite.<a href="#appendix-B-3.6.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-B-5.6">
+          <p id="appendix-B-5.6.1">Added a Cryptographic Algorithms section binding all operations to the
+group's cipher suite.<a href="#appendix-B-5.6.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-B-3.7">
-          <p id="appendix-B-3.7.1">Bound the recipient's public key and the exported secrets to the epoch
-specified in the message, and added a Messages from Past Epochs section.<a href="#appendix-B-3.7.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-B-5.7">
+          <p id="appendix-B-5.7.1">Bound the recipient's public key and the exported secrets to the epoch
+specified in the message, and added a Messages from Past Epochs section.<a href="#appendix-B-5.7.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-B-3.8">
-          <p id="appendix-B-3.8.1">Referenced the analysis of sender data encryption from RFC 9420 in the
-security considerations.<a href="#appendix-B-3.8.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-B-5.8">
+          <p id="appendix-B-5.8.1">Referenced the analysis of sender data encryption from RFC 9420 in the
+security considerations.<a href="#appendix-B-5.8.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-B-3.9">
-          <p id="appendix-B-3.9.1">Registered the "TargetedMessageData" MLS Public Key Encryption Label.<a href="#appendix-B-3.9.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-B-5.9">
+          <p id="appendix-B-5.9.1">Registered the "TargetedMessageData" MLS Public Key Encryption Label.<a href="#appendix-B-5.9.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-B-3.10">
-          <p id="appendix-B-3.10.1">Added a Test Vectors appendix.<a href="#appendix-B-3.10.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-B-5.10">
+          <p id="appendix-B-5.10.1">Added a Test Vectors appendix.<a href="#appendix-B-5.10.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-B-3.11">
-          <p id="appendix-B-3.11.1">Editorial fixes: corrected the RFC 9180 section reference for PSK mode and
-aligned the IANA wire format description with the single-recipient design.<a href="#appendix-B-3.11.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="appendix-B-5.11">
+          <p id="appendix-B-5.11.1">Editorial fixes: corrected the RFC 9180 section reference for PSK mode and
+aligned the IANA wire format description with the single-recipient design.<a href="#appendix-B-5.11.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
