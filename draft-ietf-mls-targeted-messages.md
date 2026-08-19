@@ -93,15 +93,6 @@ struct {
 } TargetedMessageSenderAuthData;
 
 struct {
-  opaque group_id<V>;
-  uint64 epoch;
-  uint32 recipient_leaf_index;
-  opaque authenticated_data<V>;
-  uint32 sender_leaf_index;
-  opaque kem_output<V>;
-} TargetedMessageTBM;
-
-struct {
   ProtocolVersion version = mls10;
   WireFormat wire_format = mls_targeted_message;
   opaque group_id<V>;
@@ -193,8 +184,9 @@ The corresponding `psk_id` parameter is the serialized `PSKId` struct.
 
 Targeted messages can include additional authenticated data (AAD) in the
 `TargetedMessage.authenticated_data` field. This field is used to carry
-application-specific data that is authenticated but not encrypted. The AAD is
-included in the `TargetedMessageTBM` struct.
+application-specific data that is authenticated but not encrypted. The content
+of this field is used as the `aad` parameter of the HPKE encryption
+({{application-data-encryption}}).
 
 # Encryption
 
@@ -228,17 +220,22 @@ following content:
 
 ~~~ tls
 struct {
-  opaque label<V>;
-  opaque context<V>;
-} TargetedMessageContext;
+  uint32 recipient_leaf_index;
+  uint32 sender_leaf_index;
+} TargetedMessageContextData;
 
-label = "MLS 1.0 TargetedMessageData"
-context = ""
+struct {
+  opaque label<V> = "MLS 1.0 TargetedMessageData";
+  TargetedMessageContextData context;
+} TargetedMessageContext;
 ~~~
 
-The `TargetedMessageContext` struct follows the same structure as `EncryptContext`
-in {{Section 5.1.3 of !RFC9420}}, but uses PSK mode rather than Base mode. The
-`context` field is empty; the message is bound to the group state through the
+The `TargetedMessageContext` struct follows the same convention as
+`EncryptContext` in {{Section 5.1.3 of !RFC9420}}, a label followed by
+application context. Unlike `EncryptContext`, the `context` field is typed
+rather than opaque, and the encryption uses PSK mode rather than Base mode.
+The `context` field binds the encryption to the recipient and sender leaf
+indices. The message is bound to the group state through the
 `targeted_message_psk`, as described in {{group-state-binding}}.
 
 The `TargetedMessageContext` struct is serialized as `hpke_context` and is used
@@ -247,35 +244,25 @@ key from the ratchet tree of the epoch specified in the `TargetedMessage` is
 used as the recipient's public key `recipient_node_public_key` for the HPKE
 encryption.
 
-The `TargetedMessageTBM` struct is serialized as `targeted_message_tbm`, and is
-used as the `aad` parameter for the HPKE encryption. Note that
-`targeted_message_tbm` contains the `kem_output` of the HPKE encapsulation.
-The sender therefore cannot use the single-shot `SealPSK` API defined in
-{{Section 6.1 of !RFC9180}}, because the `aad` parameter depends on the
-`kem_output` that `SealPSK` would produce. Instead, the sender encapsulates
-first, constructs the AAD, and then seals:
+The content of the `TargetedMessage.authenticated_data` field is used as the
+`aad` parameter for the HPKE encryption. The sender uses the single-shot
+`SealPSK` API:
 
 ~~~ tls
-(kem_output, context) = SetupPSKS(recipient_node_public_key,
-                                  hpke_context,
-                                  targeted_message_psk,
-                                  psk_id)
-
-ciphertext = context.Seal(targeted_message_tbm,
-                          targeted_message_content)
+(kem_output, ciphertext) = SealPSK(recipient_node_public_key,
+                                   hpke_context,
+                                   authenticated_data,
+                                   targeted_message_content,
+                                   targeted_message_psk,
+                                   psk_id)
 ~~~
 
 In full, the sender performs the following steps in order:
 
  - Derive the `targeted_message_psk` ({{authentication}}) and the
    `sender_auth_data_secret` ({{sender-data-encryption}}).
- - Encapsulate to `recipient_node_public_key` using `SetupPSKS` to obtain
-   `kem_output` and the HPKE sender context.
- - Serialize the `TargetedMessageTBM` struct, which includes `kem_output`, as
-   `targeted_message_tbm`.
- - Compute `ciphertext` by calling `Seal` on the HPKE sender context with
-   `targeted_message_tbm` as `aad` and the serialized `TargetedMessageContent`
-   as plaintext.
+ - Compute `kem_output` and `ciphertext` by calling `SealPSK` with the
+   serialized `TargetedMessageContent` as plaintext.
  - Compute `ciphertext_hash` from `ciphertext`, construct the
    `TargetedMessageTBS` struct, and compute the `signature` as described in
    {{authentication}}.
@@ -287,25 +274,23 @@ In full, the sender performs the following steps in order:
 The `TargetedMessageSenderAuthData.kem_output` field is set to `kem_output`,
 and the `TargetedMessage.ciphertext` field is set to `ciphertext`.
 
-The recipient learns the `kem_output` by decrypting
-`encrypted_sender_auth_data` before decrypting the content, and can therefore
-use the single-shot API to decrypt the content:
+The recipient learns the `kem_output` and the `sender_leaf_index` by
+decrypting `encrypted_sender_auth_data` before decrypting the content. The
+`sender_leaf_index` is needed to construct the `TargetedMessageContextData`
+struct:
 
 ~~~ tls
 targeted_message_content = OpenPSK(kem_output,
                   recipient_node_private_key,
                   hpke_context,
-                  targeted_message_tbm,
+                  authenticated_data,
                   ciphertext,
                   targeted_message_psk,
                   psk_id)
 ~~~
 
-The functions `SetupPSKS`, `Context.Seal`, and `OpenPSK` are defined in
-{{!RFC9180}}. The two-step flow on the sender side produces the same
-`(kem_output, ciphertext)` as `SealPSK` would with the same inputs; the
-single-shot API merely cannot express an `aad` that depends on its own
-`kem_output`.
+The functions `SealPSK` and `OpenPSK` are defined in {{Section 6.1 of
+!RFC9180}}.
 
 ## Sender Data Encryption
 
@@ -427,6 +412,21 @@ Targeted messages are bound to the group state through the
 serialized `GroupContext` into the derivation of each epoch's secrets, so the
 exporter-derived PSK commits to the full group state of the specified epoch,
 including the tree hash and the confirmed transcript hash.
+
+## Message Field Binding
+
+The HPKE encryption is bound to the fields of a targeted message at one or
+more layers. The `group_id` and `epoch` are bound through the `psk_id` and
+through the epoch-derived PSK, both of which enter the HPKE key schedule. The
+leaf indices of the recipient and the sender are bound through the HPKE `info`
+input, which carries the `TargetedMessageContextData` struct. The
+`authenticated_data` field is authenticated directly as the HPKE `aad`
+parameter. The `kem_output` is bound through the HPKE key schedule, which
+derives the encryption keys from the KEM shared secret. For the DHKEM variants
+used by the cipher suites of {{!RFC9420}}, the shared-secret derivation also
+includes the `kem_output` itself. Independently of these HPKE-layer bindings,
+the sender's signature over the `TargetedMessageTBS` struct covers all of the
+fields above together with the hash of the ciphertext.
 
 ## Signature Verification Before Processing
 
@@ -574,30 +574,30 @@ epoch: 1
 sender_leaf_index: 0
 recipient_leaf_index: 1
 padding_length: 0
-group_id: cc545d00feed847c9fcba01ca8b4987a
+group_id: f2262a40482cec0303230db5ac5fcf31
 exporter_secret:
-  05971f5e2b9993bcafa0a3d56807244c66a3c93b4e439c7bd5cdd169be0f4381
+  e7d6fb6557f6b0dd7b8b8a1eeb0ed16b3737b7564377aa4aa831999dd1bfbf6a
 sender_leaf_node:
-  20261fe9ecdc72ea51d0b6fca9ca9ac9f60cce427ffefefe5b69f9b1c6ddfe03
-  7920086ea8e6a03548f2c0c01822d17a7b740246fade24764cea0bfb15dab691
-  7acd00010673656e64657202000106000100020003000002000101000000006a
-  467e24000000006ab54a34004040864a206fc50f108bdfa0444aefb4e128a66b
-  9eb41b9c6cbf966cfd4ed512a7ba487fcb4b0e18999f67ee08a301538c3f7d92
-  b28ac24103c61b92192df4d52905
+  205d4f25388282dbeed3dc7a83c297be2d1cfb0120aeec7b776eaf1ce5c67b8d
+  2220dd42b86b0339901510cb2a16018fa89c5315e738a6e15d09b5c0c373a1b9
+  179400010673656e64657202000106000100020003000002000101000000006a
+  8560a3000000006af42cb3004040cabc6b771ebb2331ee6a63497c8949fd6335
+  3fd42657596c7b1ee0e1a50e45bde622d871ac9e6b07060f02d65f162575a542
+  a81cf07b019397d46b84d1a6c806
 recipient_encryption_priv:
-  26bd8122d929b7eb26efb4669803d5faffe166027c33a4b6965379b452978d7f
+  28e4c3614487885ffcb6f3f9a59a3a2a9109650890e10ffae0dc2e00df625ab8
 authenticated_data:
 application_data:
   4b41542074657374207061796c6f616420666f72207461726765746564206d65
   737361676573
 targeted_message:
-  0001000610cc545d00feed847c9fcba01ca8b4987a0000000000000001000000
-  010040775fce6b31a536d82b8622160021b9f8d334a0f90215041a63f9bbbab9
-  904f01d4d0639f70cb46058325779b5183a341ad21d83bb541930994320ab0eb
-  aeade031efc60de304661bdac6bde5746c152f39dd083664cddd07d93ddc7361
-  fc49f928044a6971c270dfec5d2d0ac6b63053f0c56308332b3eb137baeda80e
-  696a69ce98d42e38d68823767268900a4af6ea2b0973a099c82a51268a318c6c
-  699e774895879be7c35c1e7f557fcc1733bd93
+  0001000610f2262a40482cec0303230db5ac5fcf310000000000000001000000
+  010040777ffcb757af2885bd1d07bb2b181592847fb3735e8da278352c07a557
+  a08d7ca230f2bd254579b4e91c396fdd15e4c9196b345f6162787581858f6f9f
+  60ae4e8299a00d3fbc4018279f6630a3bdf2c3ff70a15596820404c0b8098131
+  795b6d247f71afc96562fd652e4bd28ca153d093f9c1c134d1857e37f852e72b
+  d9eb8a03ba6eb23c60484f12612ae7a7194a0430d6ee563e0e0a111bb9e46eee
+  74b8f5f2f2017c7c1f6ee1120334776b42a368
 ~~~
 
 ## Vector 2
@@ -608,30 +608,30 @@ epoch: 5
 sender_leaf_index: 0
 recipient_leaf_index: 2
 padding_length: 64
-group_id: 819eec2f706ac61ee9bafd7b9fd31cf7
+group_id: 494bb867937321cfa1ed12e38beb4ebc
 exporter_secret:
-  249a5afd41a1f2fea3b3f3acf23a2e8be12067ef1e9922663287204be7571f00
+  099416d0ebdcfc56c4b902371abe0e56453818791e851a1d99d8cd2e3d9fa5d8
 sender_leaf_node:
-  2060a9e120484d9c6506aeff9749bbca4ee725c40b6575ecaf080d392323584b
-  2520f3791381dd844d3c5d9b900ed98e69dd424a5509b69789629ae0ede99689
-  cbf100010673656e64657202000106000100020003000002000101000000006a
-  467e24000000006ab54a34004040eef8e9ba566bfe53d663cdbd1285c5d10998
-  e95b9fca89452629757f454b11f639df15b4200a1c32691015ca881ac9cdf550
-  831c6d89fdaed85b5efb21461d0d
+  2069ed695cce5e378511ec918ecfcf0ec77aef8419b8aefff56fc69ae1bde4fe
+  1220d5949ec3e201eb1131cca57e20552bf355300fb311274b2cf7fd568f2e11
+  2f0800010673656e64657202000106000100020003000002000101000000006a
+  8560a3000000006af42cb300404028bad1f073bd390cac5c8d0143baf45c5f47
+  623694d96c87f25eef82d4f8aff759075d6bd7c21b41bdd0dede88352da82ad5
+  0144a122895422207d41059ec60d
 recipient_encryption_priv:
-  fbe8a1258df29b81fe1e0fa7cf3b1048f4be9309a5590ab1e922eb7ba4bfa49f
+  aa30b0aedaa86b1197cc8f8d4dc0e0427ca3b3b31e33361a7d9e4ed43a632bd0
 authenticated_data: 726571756573742d69643d3432
 application_data: 7365636f6e64207461726765746564207061796c6f6164
 targeted_message:
-  0001000610819eec2f706ac61ee9bafd7b9fd31cf70000000000000005000000
-  020d726571756573742d69643d343240773a219020641baacc55e5b762759721
-  0fc36b1e65be4c362f575a3b7d69eceae55eb6419c1d69a891f78ea9986f819d
-  03c48986009182483818722da3df2f8e875a8a9226511adbba26532d223c7229
-  4679b9ff52460d68df08ac61e76c906f43e0711e02f49f2cc23327a475fcb348
-  b1ca7ef919feaaf44068c83943bc53e8055ce739cb31a6bcc9264b11130f1844
-  575caf153b0d46ed98c51f53581cda073a7936bf9acf620738fa001c3fc049ed
-  94a17455cabd088bfb00efc2bed7a8ae49dc7a8672a88d0936bc157f1f8487b8
-  719d2049c07eddf0762c2802bdb73c26274f
+  0001000610494bb867937321cfa1ed12e38beb4ebc0000000000000005000000
+  020d726571756573742d69643d343240770d3fc8dad6abb190188ea5e3a35bbc
+  949520be96cb6fc4619b83165fc50500d9f04b6ff70717d9df81aeb3b7f99c04
+  2470cdee8adbc75419552c20802b968b75a3cc577ea5dc9ff4cd8d0cfccf9be1
+  f963b6ae360d643aa0e82b5e373e0696d01b77409543a8cc820871e6fb77a224
+  8c0ab36c74e5f9994068e5cd351ad109febddbc9dabff823763b59647f2f20d9
+  7307c1b52d784186c4349ae12fbece479657c5080146b323a7e3ddd82dd812ac
+  8af669577a59fd6409dfc537c5ce7723d006ca30aa642ffa2709187d1d4616e8
+  13628c67aed7575de8b6014615afa038dc4c
 ~~~
 
 ## Vector 3
@@ -642,35 +642,48 @@ epoch: 42
 sender_leaf_index: 3
 recipient_leaf_index: 7
 padding_length: 128
-group_id: 70a9204973aff6642734f9ba6b5792c6
+group_id: e87d0d3f4c6704f4c7b293803608a2ca
 exporter_secret:
-  2a1691e01a751a5e22a3906633f78435b14f1b313124338d9896e8b49cb59fef
+  2966045954d98555c3eb113c09053631d0a5da1331409fc2183f6e07ebb73a66
 sender_leaf_node:
-  206e9de742e7abd12d797ffb94e124000dbeaf94dcccc6a70b55fca99a321980
-  1d206f84c7f10dc4ecfe93952108ffb0904825a199b1f37aeac4aedb848a166e
-  1d8300010673656e64657202000106000100020003000002000101000000006a
-  467e24000000006ab54a3400404075ec3f38b4d0d35a7b5a42f85416c26e3e56
-  e30d03827adeaa2319b187fac34bf1f108dca9d17274416d8dbf7ec03ad02a56
-  d80c9e0c755286d0b447fc40e802
+  207ced1c787759a5538d0b4b40231a5c35417593458ac8f79f4270a20f4f5be7
+  2120ba40b1f4ed2a356eda58ed61fc9933324d2a2a2c9669257b2918f9bad57c
+  5e7700010673656e64657202000106000100020003000002000101000000006a
+  8560a3000000006af42cb3004040fa4214542d9a917fc3520a47692dd4c9ce4f
+  a9f1786b0414b1209f46e0f1df687c0da0c558628918794beb0b2fd9a4ad2d08
+  47722c552742e1a4ac0464e81b00
 recipient_encryption_priv:
-  89a94b207c3bf5b9ba9a704b689ec56437952f1ada84883e3b2225618c61b75d
+  24c98ea1980e34892cfe90cb87c4e6757fcdcde7cd28e3b51d100ea907bdae2b
 authenticated_data:
 application_data:
 targeted_message:
-  000100061070a9204973aff6642734f9ba6b5792c6000000000000002a000000
-  07004077cd789de01be4a55d679fc7551e3ca215de779efb874b905911ec7a74
-  0ce2c7fb4c71356aae83dcd8a0ba96d64cf3e5a4413af85eabd4fef58d100396
-  581a69a20516c1cef76bc76b5caedcf17ce1b3d89118e3b1c0ac974a6f78fbd4
-  3b9cb97098d2697f97f0edeb3a403d4f3683d22fabbb6da67c16154091ce8156
-  d3d5057e803f17af6f88d59f4fe70e254a82dbc5037f86f81a8c8ac0eee77396
-  fcb0f97f5ad7a3100ac20b621563f6bb3acd5bc5a8cac3479a041e93e737c8fc
-  255b0c4fd93c601e648658c76a7b7e1db60610111b04f1539c6ea5d76d66a3cc
-  16cd8ca078ef72f460dfd7adc6be27f11b435aed87f46a6cb9a1b8d3667d084e
-  0144e65839be751022d26f2e65e5
+  0001000610e87d0d3f4c6704f4c7b293803608a2ca000000000000002a000000
+  0700407775080b98cd1a824901a329abf71dbb638ea997cfe0971100c878080a
+  214937c645c42a187f2eece6e2728c14be16f1e86b7053940cdc0e483e32dd78
+  42bb3bc51bc492556c55088f5087bf5a0f31d264ba94dd08c3b876384b6afd41
+  e2d1424b0c2eef2eb61f923fd612f85583c8f5a831313f8f8e7021409157ccd8
+  6dba88622b7ff3c984bbf93ced6898e990414032b5cb610af88ac92e21ec00a2
+  69a3cf0a3073075a000952bac39e41074361012ad37a8194b0b9b42382b1e3e7
+  191560bc664a8678555eb2d53389d1f0b7c231b3b4b4f1dc68f59e627e806ccd
+  b000c98f3074e120b03a91746f77185af95b6446813a95132ef5c153587a7856
+  52a77cd85ef344d1134db24fbe38
 ~~~
 
 # Change Log
 {:removeInRFC="true"}
+
+draft-ietf-mls-targeted-messages-02:
+
+- Replaced the `TargetedMessageTBM` struct with the
+  `TargetedMessageContextData` struct, which carries the leaf indices and is
+  used as the `context` field of the HPKE info.
+- Used the content of the `authenticated_data` field directly as the HPKE
+  `aad` parameter.
+- Replaced the two-step `SetupPSKS` and `Context.Seal` flow with the
+  single-shot `SealPSK` API, which is possible now that the AAD no longer
+  depends on the `kem_output`.
+- Added a security consideration describing how each message field is bound.
+- Updated the test vectors.
 
 draft-ietf-mls-targeted-messages-01:
 
