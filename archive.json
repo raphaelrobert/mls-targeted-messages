@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-07T03:35:14.954160+00:00",
+  "timestamp": "2026-08-20T01:18:16.471982+00:00",
   "repo": "mlswg/mls-targeted-messages",
   "labels": [
     {
@@ -347,6 +347,53 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDOPFs6J88AAAABAPvuUA",
+      "title": "simplify HPKE binding",
+      "url": "https://github.com/mlswg/mls-targeted-messages/pull/10",
+      "state": "OPEN",
+      "author": "raphaelrobert",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Simplifies the binding with HPKE, the old version had some redundancies. This allows us to use the one-shot API for encryption as well.",
+      "createdAt": "2026-08-19T07:14:23Z",
+      "updatedAt": "2026-08-19T10:18:13Z",
+      "baseRepository": "mlswg/mls-targeted-messages",
+      "baseRefName": "main",
+      "baseRefOid": "5dc32fc3f6cce0c6d2fe05facb75112aec284dc9",
+      "headRepository": "mlswg/mls-targeted-messages",
+      "headRefName": "simplify-hpke-binding",
+      "headRefOid": "ae3ab52c35f57f7e4eec86ddd863c2a5fa83b3db",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOPFs6J88AAAABKDMwVg",
+          "commit": {
+            "abbreviatedOid": "46bd3ef"
+          },
+          "author": "kkohbrok",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "Looks good! Just one thing I think you could simplify further.",
+          "createdAt": "2026-08-19T07:18:47Z",
+          "updatedAt": "2026-08-19T07:24:06Z",
+          "comments": [
+            {
+              "originalPosition": 11,
+              "body": "Since `TargetedMessageContextData` is not mentioned in this section anymore, I'd just inline it into the `TargetedMessageContext` struct (as opposed to have a separate struct that is then included as serialized byte string).",
+              "createdAt": "2026-08-19T07:22:13Z",
+              "updatedAt": "2026-08-19T07:24:06Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
